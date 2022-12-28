@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">SportsMedia</string>
+    <string name="ed_user">Nombre de usuario</string>
+    <string name="et_password">Contraseña</string>
+    <string name="btn_login">Iniciar sesión</string>
+    <string name="btn_regsitro">Registrarse</string>
+    <string name="descripcion">Bienvenido a SportMedia, la app que te ayudará a conectar con otras personas con intereses deportivos similares a los tuyos</string>
+    <string name="btn_newUser">Crear usuario</string>
+    <string name="Error">Error</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="titulo_registro">Registro de nuevo usuario</string>
+</resources>
