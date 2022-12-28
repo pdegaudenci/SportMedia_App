@@ -2,13 +2,13 @@ package com.example.sportsmedia.models;
 
 public class Usuario {
     String username,nombre,apellido,password,fechanac,email;
-    int uid;
+    String uid;
 
     public Usuario() {
 
     }
 
-    public Usuario(int id, String nombre, String apellido, String username, String password, String fechanac, String email){
+    public Usuario(String id, String nombre, String apellido, String username, String password, String fechanac, String email){
         this.uid = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -66,11 +66,11 @@ public class Usuario {
         this.email = email;
     }
 
-    public int getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 

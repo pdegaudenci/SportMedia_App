@@ -105,6 +105,27 @@
                     android:inputType="textPassword" />
 
             </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese fecha nacimiento"
+                style="@style/edit_text"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_fecha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:maxLines="1"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+
             <Button
                 android:id="@+id/btn_crearUsuario"
                 android:layout_width="match_parent"
