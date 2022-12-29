@@ -8,6 +8,8 @@ import android.widget.TextView;
 import com.example.sportsmedia.models.Usuario;
 
 public class HomeActivity extends AppCompatActivity {
+    private static Usuario userglobal;
+    private TextView user;
     public static Usuario getUserglobal() {
         return userglobal;
     }
@@ -16,13 +18,17 @@ public class HomeActivity extends AppCompatActivity {
         HomeActivity.userglobal = userglobal;
     }
 
-    private static Usuario userglobal;
-    private TextView tv_editname,tv_editlastname,tv_editusername,tv_editfechanac,tv_editpassword,tv_editid;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        String text = getString(R.string.welcome, getUserglobal().getNombre());
+        System.out.println("ENTROOOOOO"+text);
+        user=(TextView) findViewById(R.id.user_home);
+        user.setText(text);
 
     }
 

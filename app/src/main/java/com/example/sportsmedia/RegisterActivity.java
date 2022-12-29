@@ -133,9 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
             usuario.setPassword(passwd);
             usuario.setEmail(correo);
             usuario.setFechanac(nacimiento);
-
         }
-
         return usuario;
     }
 

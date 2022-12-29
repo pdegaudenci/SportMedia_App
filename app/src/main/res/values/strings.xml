@@ -11,4 +11,5 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="titulo_registro">Registro de nuevo usuario</string>
+    <string name="welcome">Bienvenido, %1$s</string>
 </resources>
