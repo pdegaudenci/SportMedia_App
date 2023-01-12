@@ -14,7 +14,8 @@
             android:exported="true" />
         <activity
             android:name=".HomeActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.SportsMedia.NoActionBar"/>
         <activity
             android:name=".LoginActivity"
             android:exported="true" >

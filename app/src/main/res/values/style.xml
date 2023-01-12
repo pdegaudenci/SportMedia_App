@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="titulo" parent="TextAppearance.AppCompat">
         <item name="android:textColor">#696C6D</item>
 
@@ -8,5 +9,26 @@
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">sans-serif-condensed-medium</item>
         <item name="android:textFontWeight">900</item>
+    </style>
+
+    <style name="edit_text">
+        <item name="android:textColor">#696C6D</item>
+        <item name="android:layout_margin">10dp</item>
+
+    </style>
+
+    <style name="Theme.SportsMedia.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.PrimarySurface</item>
+        <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowStyle</item>
+    </style>
+
+    <style name="AppTheme.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@android:color/white</item>
     </style>
 </resources>

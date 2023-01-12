@@ -12,4 +12,6 @@
     <string name="title_notifications">Notifications</string>
     <string name="titulo_registro">Registro de nuevo usuario</string>
     <string name="welcome">Bienvenido, %1$s</string>
+    <string name="navigation_drawer_close">Cerrado</string>
+    <string name="navigation_drawer_open">Abierto</string>
 </resources>
