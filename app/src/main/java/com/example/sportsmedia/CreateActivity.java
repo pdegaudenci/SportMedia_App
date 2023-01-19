@@ -1,5 +1,7 @@
 package com.example.sportsmedia;
 
+import static android.app.PendingIntent.getActivity;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.sportsmedia.models.Actividad;
 import com.example.sportsmedia.models.Usuario;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
@@ -17,9 +20,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class CreateActivity extends AppCompatActivity {
-    DateTimeFormatter formatter;
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH);
     TextView duration;
     TextView startTime;
     TextView endTime;
@@ -34,7 +38,7 @@ public class CreateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
-        DateTimeFormatter.ofPattern("yyyy MM dd HH:mm");
+
 
 
         binding();
@@ -44,14 +48,6 @@ public class CreateActivity extends AppCompatActivity {
 
 
 
-    private void showStartTimePicker() {
-
-    }
-
-
-    private void showEndTimePicker() {
-
-    }
     /**
      * Obtener elementos graficos de la vista xml a través de su id.
      */
@@ -95,10 +91,10 @@ public class CreateActivity extends AppCompatActivity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Usuario usuario = validarCampos();
-                if (usuario!=null) {
-                    registroUsuario(usuario);
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                Actividad actividad = validarCampos();
+                if (actividad!=null) {
+                    registroActividad(actividad);
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                     startActivity(intent);
                 }
                 setearEdt();
@@ -106,6 +102,32 @@ public class CreateActivity extends AppCompatActivity {
         });
 
     }
+
+    private void showStartTimePicker() {
+        showDialog();
+    }
+
+
+    private void showEndTimePicker() {
+        showDialog();
+    }
+
+    /**
+     * Metodo que visualiza el TimePicker
+     */
+    private void showDialog() {
+        new TimePickerFragment().show(getSupportFragmentManager(), "time-picker");
+    }
+    private void setearEdt() {
+    }
+
+    private void registroActividad(Actividad actividad) {
+    }
+
+    private Actividad validarCampos() {
+        return new Actividad();
+    }
+
     public void initFirebaseService(){
         FirebaseApp.initializeApp(this);
         firebase = FirebaseDatabase.getInstance();

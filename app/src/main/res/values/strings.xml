@@ -36,4 +36,6 @@
     <string name="equipo">Es necesario contar con equipo especial</string>
     <string name="btn_crear_tarea">"Crear nueva actividad "</string>
     <string name="btn_nueva_actividad">Crear actividad</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
