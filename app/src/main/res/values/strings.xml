@@ -14,4 +14,26 @@
     <string name="welcome">Bienvenido, %1$s</string>
     <string name="navigation_drawer_close">Cerrado</string>
     <string name="navigation_drawer_open">Abierto</string>
+    <string name="titulo_alta">Crea una nueva Actividad deportiva</string>
+    <string name="lista_zonas">Comunidad Autónoma</string>
+    <string name="comunidad1">Andalucía</string>
+    <string name="comunidad2">Asturias</string>
+    <string name="comunidad3">Aragon</string>
+    <string name="comunidad4">Islas Baleares</string>
+    <string name="comunidad5">Islas Canarias</string>
+    <string name="comunidad6">Canarias</string>
+    <string name="comunidad7">Cantabria</string>
+    <string name="comunidad8">Castilla La Mancha</string>
+    <string name="comunidad9">Castilla y Leon</string>
+    <string name="comunidad10">Cataluña</string>
+    <string name="comunidad11">Extremadura</string>
+    <string name="comunidad12">La Rioja</string>
+    <string name="comunidad13">Madrid</string>
+    <string name="comunidad14">Murcia</string>
+    <string name="comunidad15">Navarra</string>
+    <string name="comunidad16">Galicia</string>
+    <string name="comunidad17">Pais Vasco</string>
+    <string name="equipo">Es necesario contar con equipo especial</string>
+    <string name="btn_crear_tarea">"Crear nueva actividad "</string>
+    <string name="btn_nueva_actividad">Crear actividad</string>
 </resources>

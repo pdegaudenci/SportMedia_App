@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Apellidos"
-                style="@style/"
+                style="@style/edit_text"
                 >
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_apellido"
@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Usuario"
-                style="@styles/edit_text"
+                style="@style/edit_text"
                 >
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_username"

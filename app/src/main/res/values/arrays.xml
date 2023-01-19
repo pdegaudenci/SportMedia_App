@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="lista_comunidades">
+        <item>@string/comunidad1</item>
+        <item>@string/comunidad2</item>
+        <item>@string/comunidad3</item>
+        <item>@string/comunidad4</item>
+        <item>@string/comunidad5</item>
+        <item>@string/comunidad6</item>
+        <item>@string/comunidad7</item>
+        <item>@string/comunidad8</item>
+        <item>@string/comunidad9</item>
+        <item>@string/comunidad10</item>
+        <item>@string/comunidad11</item>
+        <item>@string/comunidad12</item>
+        <item>@string/comunidad13</item>
+        <item>@string/comunidad14</item>
+        <item>@string/comunidad15</item>
+        <item>@string/comunidad16</item>
+        <item>@string/comunidad17</item>
+    </string-array>
+
+
+</resources>
