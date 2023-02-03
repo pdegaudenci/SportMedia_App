@@ -38,4 +38,8 @@
     <string name="btn_nueva_actividad">Crear actividad</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">Cuenta personal</string>
+    <string name="actividades">Mis actividades</string>
+    <string name="red_actividades">Actividades sociales</string>
+    <string name="logout">Cerrar sesión</string>
 </resources>
