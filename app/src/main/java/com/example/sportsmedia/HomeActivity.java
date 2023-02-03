@@ -1,5 +1,7 @@
 package com.example.sportsmedia;
 
+import static com.google.android.material.internal.ContextUtils.getActivity;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -9,13 +11,16 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
-import com.example.sportsmedia.auxiliar.ActividadesFragment;
-import com.example.sportsmedia.auxiliar.HomeFragment;
-import com.example.sportsmedia.auxiliar.RedFragment;
+import com.example.sportsmedia.fragments.ActividadesFragment;
+import com.example.sportsmedia.fragments.CrearActividadFragment;
+import com.example.sportsmedia.fragments.HomeFragment;
+import com.example.sportsmedia.fragments.RedFragment;
 import com.example.sportsmedia.models.Usuario;
 import com.google.android.material.navigation.NavigationView;
 
@@ -64,12 +69,19 @@ public class HomeActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment = null;
+                Fragment fragment=null;
                 boolean fragmentTransaction = false;
-                System.out.println("ENTRA ");
                 switch (item.getItemId()){
                     case R.id.nav_activities:
                         fragment = new ActividadesFragment();
+                        ActividadesFragment actividadesFragment= (ActividadesFragment) fragment;
+                        actividadesFragment.listener = new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(getApplicationContext(), CreateActivity.class);
+                                startActivity(intent);
+                            }
+                        };
                         fragmentTransaction = true;
                         break;
                     case R.id.nav_red:

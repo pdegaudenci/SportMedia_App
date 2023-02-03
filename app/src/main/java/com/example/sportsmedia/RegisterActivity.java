@@ -11,14 +11,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.sportsmedia.auxiliar.DatePickerFragment;
+import com.example.sportsmedia.fragments.DatePickerFragment;
 import com.example.sportsmedia.models.Usuario;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.UUID;
-import java.util.logging.Logger;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText nombre , apellido, password,email,username, passwdConfirm, et_fechaNac ;
