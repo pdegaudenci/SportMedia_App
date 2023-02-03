@@ -10,7 +10,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -31,7 +36,7 @@ public class HomeActivity extends AppCompatActivity {
     public static Usuario getUserglobal() {
         return userglobal;
     }
-
+    public Context context;
     public static void setUserglobal(Usuario userglobal) {
         HomeActivity.userglobal = userglobal;
     }
@@ -75,13 +80,7 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.nav_activities:
                         fragment = new ActividadesFragment();
                         ActividadesFragment actividadesFragment= (ActividadesFragment) fragment;
-                        actividadesFragment.listener = new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(getApplicationContext(), CreateActivity.class);
-                                startActivity(intent);
-                            }
-                        };
+
                         fragmentTransaction = true;
                         break;
                     case R.id.nav_red:

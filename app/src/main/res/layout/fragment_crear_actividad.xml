@@ -13,7 +13,8 @@
         android:orientation="vertical"
         android:layout_height="fill_parent"
         android:theme="@style/Theme.SportsMedia"
-        android:background="#3ed632">
+        android:background="#3ed632"
+        tools:context=".fragments.CrearActividadFragment">
 
         <TextView
             android:id="@+id/titulo_registro"

@@ -1,9 +1,13 @@
 package com.example.sportsmedia.fragments;
 
+import static com.google.android.material.internal.ContextUtils.getActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,7 +74,19 @@ public class ActividadesFragment extends Fragment {
         // Inflar el layout de este fragment
         View fragment= inflater.inflate(R.layout.fragment_actividades, container, false);
         btn_crearActividad =fragment.findViewById(R.id.btn_crearActividad2);
-        btn_crearActividad.setOnClickListener(listener);
+        btn_crearActividad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FragmentManager manager= getActivity().getSupportFragmentManager();
+
+                FragmentTransaction ft= manager.beginTransaction().replace(R.id.fragment, new CrearActividadFragment());
+                ft.commit();
+            }
+        });
+        // Cargo Fragment handler
+
+
         return fragment;
     }
 }
