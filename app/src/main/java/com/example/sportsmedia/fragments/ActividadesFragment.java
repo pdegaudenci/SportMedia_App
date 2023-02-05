@@ -1,8 +1,5 @@
 package com.example.sportsmedia.fragments;
 
-import static com.google.android.material.internal.ContextUtils.getActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.sportsmedia.CreateActivity;
 import com.example.sportsmedia.R;
 
 /**
@@ -78,10 +74,15 @@ public class ActividadesFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                FragmentManager manager= getActivity().getSupportFragmentManager();
+                btn_crearActividad.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
-                FragmentTransaction ft= manager.beginTransaction().replace(R.id.fragment, new CrearActividadFragment());
-                ft.commit();
+                        FragmentManager manager= getActivity().getSupportFragmentManager();
+                        FragmentTransaction ft= manager.beginTransaction().replace(R.id.fragment, new CrearActividadFragment());
+                        ft.commit();
+                    }
+                });
             }
         });
         // Cargo Fragment handler

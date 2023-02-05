@@ -1,7 +1,5 @@
 package com.example.sportsmedia;
 
-import static com.google.android.material.internal.ContextUtils.getActivity;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -10,23 +8,17 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.example.sportsmedia.fragments.ActividadesFragment;
-import com.example.sportsmedia.fragments.CrearActividadFragment;
 import com.example.sportsmedia.fragments.HomeFragment;
 import com.example.sportsmedia.fragments.RedFragment;
-import com.example.sportsmedia.models.Usuario;
+import com.example.sportsmedia.dto.Usuario;
 import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity {
@@ -65,11 +57,15 @@ public class HomeActivity extends AppCompatActivity {
         }
         toggle.syncState();
         navigationView = (NavigationView)findViewById(R.id.navigation_view);
-        cargarListener();
+        cargarMenu();
 
     }
 
-    private void cargarListener(){
+    /**
+     * Carga los items de menu asociado a un listener que la accion de
+     * cargar un determinado fragment , en funcion del item seleccionado
+     */
+    private void cargarMenu(){
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -80,7 +76,6 @@ public class HomeActivity extends AppCompatActivity {
                     case R.id.nav_activities:
                         fragment = new ActividadesFragment();
                         ActividadesFragment actividadesFragment= (ActividadesFragment) fragment;
-
                         fragmentTransaction = true;
                         break;
                     case R.id.nav_red:

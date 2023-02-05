@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.sportsmedia.fragments.DatePickerFragment;
-import com.example.sportsmedia.models.Usuario;
+import com.example.sportsmedia.dto.Usuario;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -79,6 +79,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Metodo que visualiza un DatePicker para visualizar dialogo para seleccion de fecha de la actividad
+     */
     private void showDatePickerDialog() {
         DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
             @Override

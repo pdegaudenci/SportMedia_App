@@ -1,8 +1,8 @@
-package com.example.sportsmedia.models;
+package com.example.sportsmedia.dto;
 
 public class Usuario {
-    String username,nombre,apellido,password,fechanac,email;
-    String uid;
+    private String username,nombre,apellido,password,fechanac,email;
+    private String uid;
 
     public Usuario() {
 

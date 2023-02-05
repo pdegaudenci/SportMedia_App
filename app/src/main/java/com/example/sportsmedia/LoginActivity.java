@@ -10,12 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.sportsmedia.models.Usuario;
-import com.google.firebase.FirebaseApp;
+import com.example.sportsmedia.controller.FirebaseController;
+import com.example.sportsmedia.dto.Usuario;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
@@ -27,10 +25,10 @@ import java.util.HashMap;
 public class LoginActivity extends AppCompatActivity {
     private EditText edt_user,edt_password;
     private Button btn_login, btn_register;
-    private FirebaseDatabase firebase;
-    private DatabaseReference reference;
-    private static ArrayList<Usuario> users = new ArrayList<>();
 
+
+    private static ArrayList<Usuario> users = new ArrayList<>();
+    private FirebaseController firebase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,19 +38,13 @@ public class LoginActivity extends AppCompatActivity {
 
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_register=(Button) findViewById(R.id.btn_registro);
-        initFirebase();
+        firebase = new FirebaseController("Usuarios",getApplicationContext());
         listeners();
 
 
     }
 
-    private void initFirebase() {
-        FirebaseApp.initializeApp(this);
-        //Instancia a la base de datos
-        firebase = FirebaseDatabase.getInstance();
-        //Referencia al nodo que queremos acceder
-        reference= firebase.getReference("Usuarios");
-    }
+
 
     private void listeners(){
     btn_register.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +70,7 @@ private boolean autenticarUsuario() {
     HashMap dataUser = new HashMap();
     dataUser.put("username",edt_user.getText().toString());
     dataUser.put("password",edt_password.getText().toString());
-        reference.addValueEventListener(new ValueEventListener() {
+        firebase.getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
