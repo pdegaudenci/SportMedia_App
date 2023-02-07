@@ -10,14 +10,14 @@ public class Actividad {
     private String horaInicio;
     private String horaFin;
 
-    private Long duracion;
+    private String duracion;
     private String fecha;
     private String usuario;
 
     public Actividad(){
 
     }
-    public Actividad(String titulo, String descripcion, String fecha, String comunidad, boolean equipoEspecial, String horaInicio, String horaFin, String usuario,Long duracion) {
+    public Actividad(String titulo, String descripcion, String fecha, String comunidad, boolean equipoEspecial, String horaInicio, String horaFin, String usuario,String duracion) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.fecha=fecha;
@@ -102,11 +102,11 @@ public class Actividad {
         this.usuario = usuario;
     }
 
-    public Long getDuracion() {
+    public String getDuracion() {
         return duracion;
     }
 
-    public void setDuracion(Long duracion) {
+    public void setDuracion(String duracion) {
         this.duracion = duracion;
     }
 }

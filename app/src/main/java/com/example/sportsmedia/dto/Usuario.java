@@ -1,9 +1,19 @@
 package com.example.sportsmedia.dto;
 
+import java.util.ArrayList;
+
 public class Usuario {
+    /**
+     * Atriutos de usuarios
+     */
     private String username,nombre,apellido,password,fechanac,email;
     private String uid;
+    // Atributo que contiene a las actividades inscriptas del usuario
+    private ArrayList<Actividad> actividades;
 
+    /**
+     * CONSTRUCTORES
+     */
     public Usuario() {
 
     }
@@ -17,6 +27,10 @@ public class Usuario {
         this.fechanac=fechanac;
         this.email=email;
     }
+
+    /**
+     * GETTERS AND SETTERS
+     */
 
     public String getUsername() {
         return username;
@@ -72,6 +86,14 @@ public class Usuario {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public ArrayList<Actividad> getActividades() {
+        return actividades;
+    }
+
+    public void setActividades(ArrayList<Actividad> actividades) {
+        this.actividades = actividades;
     }
 
     @Override

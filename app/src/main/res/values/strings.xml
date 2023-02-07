@@ -42,4 +42,7 @@
     <string name="actividades">Mis actividades</string>
     <string name="red_actividades">Actividades sociales</string>
     <string name="logout">Cerrar sesión</string>
+    <string name="argentina_full_snippet">La República Argentina, conocida simplemente como Argentina,  es un país soberano de América del Sur, ubicado en el extremo sur y sudeste  de dicho subcontinente. Adopta la forma de gobierno republicana, representativa y federal.  El Estado nacional convive federativamente con veinticuatro entidades  estatales autónomas, de las cuales veintitrés son provincias  que preservan todo el poder no delegado constitucionalmente  a la Nación y una es la Ciudad Autónoma de Buenos Aires,  designada por ley como capital federal.</string>
+    <string name="apikey">AIzaSyBZkHF8-hV5ZW5W3TW7LLHKEsp0rJ-h340</string>
+    <string name="direccion_actividad">Direccion:</string>
 </resources>

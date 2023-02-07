@@ -32,6 +32,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 /**
  * Clase para crear una Actividad e insertarla en firebase storage. La clase hereda de {@link Fragment
@@ -40,7 +41,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class CrearActividadFragment extends Fragment {
     private FirebaseController firebase;
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH);
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
     private TextView txt_duration;
     private TextView startTime;
     private TextView endTime;
@@ -50,6 +51,9 @@ public class CrearActividadFragment extends Fragment {
     private Button btnCreate;
     private Spinner feedbackSpinner;
     private View vista;
+
+    private static double latitud;
+    private static double longitud;
 
     Long duration=null;
     CheckBox chk_equipo;
@@ -132,6 +136,9 @@ public class CrearActividadFragment extends Fragment {
 
         txt_duration = (TextView) vista.findViewById(R.id.duration);
         btnCreate =(Button) vista.findViewById(R.id.btn_crearActividad);
+        FragmentManager manager= getActivity().getSupportFragmentManager();
+        FragmentTransaction ft= manager.beginTransaction().replace(R.id.fragment_mapa, new GoogleMapFragment());
+        ft.commit();
     }
 
     /**
@@ -162,10 +169,12 @@ public class CrearActividadFragment extends Fragment {
 
                 showEndTimePicker();
                 String horaInicio= startTime.getText().toString();
-                String horaFin= startTime.getText().toString();
+                String horaFin= endTime.getText().toString();
+                Logger.getLogger("logger").info("Hora inicio:"+horaInicio+"/hora fin:"+horaFin);
                 // En caso de que sea un horario correcto, se calcula diferencia en minutos y se seta el TextView corrspondiente con la duracion
                 if(Auxiliar.validarHorario(horaInicio,horaFin)){
                     duration=Auxiliar.calcularDiferenciaMinutos(horaInicio,horaFin);
+                    Logger.getLogger("logger").info("Duracion de la activad en minutos:"+duration);
                     setearDuracion(txt_duration,duration);
                 }
                 else{
@@ -179,15 +188,18 @@ public class CrearActividadFragment extends Fragment {
             public void onClick(View v) {
                 Actividad actividad = validarCampos();
                 if (actividad!=null) {
-
-                    registroActividad(actividad);
+                    // Verifica que se haya insertado correctamente la actividad en firebase storage
+                    if(registroActividad(actividad))
+                        Toast.makeText(getActivity().getApplicationContext(), "Actividad creada correctamente", Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(getActivity().getApplicationContext(), "Error al crear la actividad", Toast.LENGTH_SHORT).show();
+                    // Una vez creada la actividad se invoca al fragment de actividades para que se acargado
                     FragmentManager manager= getActivity().getSupportFragmentManager();
-
-                    FragmentTransaction ft= manager.beginTransaction().replace(R.id.fragment, new CrearActividadFragment());
+                    FragmentTransaction ft= manager.beginTransaction().replace(R.id.fragment, new ActividadesFragment());
                     ft.commit();
                 }
                 else{
-
+                    Toast.makeText(getActivity().getApplicationContext(), "Error en algun campo de la actividad", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -206,8 +218,6 @@ public class CrearActividadFragment extends Fragment {
      */
     private void showEndTimePicker() {
         showDialog(endTime);
-
-
     }
 
     /**
@@ -278,7 +288,7 @@ public class CrearActividadFragment extends Fragment {
         String horaInicio=this.startTime.getText().toString();
         String horaFin=this.endTime.getText().toString();;
         String usuario=HomeActivity.getUserglobal().getUsername();
-
+        String duracion=txt_duration.getText().toString();
         // Si algun campo obligatorio no es llenado , visualiza un mensaje de tipo Toast
         if(titulo.equals("")||descripcion.equals("")||comunidad.equals("")||horaInicio.equals("")|| horaFin.equals("") )
             Toast.makeText(getActivity().getApplicationContext(), "Debe completar todos los campos", Toast.LENGTH_SHORT).show();
@@ -297,10 +307,13 @@ public class CrearActividadFragment extends Fragment {
             actividad.setUid(UUID.randomUUID().toString());
             actividad.setUsuario(usuario);
             actividad.setTitulo(titulo);
+            actividad.setFecha(fecha);
+            actividad.setHoraInicio(horaInicio);
+            actividad.setHoraFin(horaFin);
             actividad.setDescripcion(descripcion);
             actividad.setComunidad(comunidad);
             actividad.setEquipoEspecial(equipoEspecial);
-            actividad.setDuracion(duration);
+            actividad.setDuracion(duracion);
 
         }
         return actividad;
@@ -314,6 +327,7 @@ public class CrearActividadFragment extends Fragment {
         String formato = "%02d:%02d";
         long horasReales = TimeUnit.MINUTES.toHours(duration);
         long minutosReales = TimeUnit.MINUTES.toMinutes(duration) - TimeUnit.HOURS.toMinutes(TimeUnit.MINUTES.toHours(duration));
+        System.out.println("Horas:"+horasReales+" minutos:"+minutosReales);
         txt_duration.setText(String.format(formato, horasReales, minutosReales));
     }
 
@@ -326,6 +340,23 @@ public class CrearActividadFragment extends Fragment {
     private boolean registroActividad(Actividad actividad) {
         // Realiza la insercion, devuelve un objeto de la clase Task y se invoca a su metodo isSucccesful para evaluar si se realizó con exito la operacion
         boolean correcta= firebase.getReference().child("Actividades").child(actividad.getUid()).setValue(actividad).isSuccessful();
+
         return correcta;
+    }
+
+    public static double getLatitud() {
+        return latitud;
+    }
+
+    public static void setLatitud(double latitud) {
+        CrearActividadFragment.latitud = latitud;
+    }
+
+    public static double getLongitud() {
+        return longitud;
+    }
+
+    public static void setLongitud(double longitud) {
+        CrearActividadFragment.longitud = longitud;
     }
 }

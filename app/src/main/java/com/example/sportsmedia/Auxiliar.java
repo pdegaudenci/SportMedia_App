@@ -17,7 +17,7 @@ public class Auxiliar {
         String aux = null;
         try {
             // formatear fechas
-            SimpleDateFormat parseador = new SimpleDateFormat("dd/mm/yyyy");
+            SimpleDateFormat parseador = new SimpleDateFormat("dd/MM/yyyy");
             Date fechaActual = Auxiliar.obtenerFechaActual("dd/mm/yyyy");
             Date fechaTarget = parseador.parse(fechaInicio);
 
@@ -72,7 +72,7 @@ public class Auxiliar {
                 diferencia =(long) ((horarioFin.getTime() - horarioInicio.getTime())/mlsMinuto);
 
             } catch (ParseException e) {
-                throw new RuntimeException(e);
+                Logger.getLogger("logger").info("ERROR en calculo de minutos en diferencia horaria "+Auxiliar.class);
             }
         }
         return diferencia;
