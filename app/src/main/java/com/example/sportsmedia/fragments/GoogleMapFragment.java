@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sportsmedia.R;
 import com.google.android.gms.common.api.Status;
@@ -126,11 +127,14 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
     }
 
     /**
-     * Metodo que carga el mapa de la API de google maps
+     * Metodo que carga el mapa de la API de google maps en un fragment
+     * Este fragment administra totalmente la creación, actualización y destrucción de los mapas en la vista.
      */
     private void cargarMap() {
         // Obtengo fragment del fichero xml fragment_google_map donde cargaré el mapa
         SupportMapFragment mapFragment= (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_map);
+
+        // método de asociación getMapAsync()  registra la actividad como escucha.
         // Invoca al metodo onMapReady () , por lo que la Clase de este Fragment debe implementar la interfaz OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
@@ -139,7 +143,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
         txt_direccion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iniciarAutocompletadoMaps();
+             iniciarAutocompletadoMaps();
             }
         });
     }
@@ -149,6 +153,7 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
      * API de Google Places se autocpmplete con resultados de direcciones.
      */
     private void iniciarAutocompletadoMaps(){
+
         // Definir que tipo de datos  deseamos obtener a partir del Place seleccionado : Id, nombre y direccion completa
         List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME,Place.Field.ADDRESS_COMPONENTS);
 
@@ -172,10 +177,12 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         // Proceso resultado del fragment de Autocomplete place
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             // Si el resultado devuelto por lo ingresado por el usuario en el Autocomplete Place es correcto
             if (resultCode == RESULT_OK) {
+
                 Place place = Autocomplete.getPlaceFromIntent(data);
                 System.out.println(("Place: " + place.getName() + ", " + place.getId()));
                 // Seteo contenido de textview con direccion seleccionado por usuario (resultado del Autocomplete place)
@@ -190,15 +197,17 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
                 guardarDatosUbicacion(place);
 
             }
-            // Si el resultado devuelto por lo ingresado por el usuario en el Autocomplete Place es incorrecto
+            // Si el resultado devuelto por el Autocomplete Place es un error (No se pudo conectar
+            // correctamente al servicio de Google Platform Map, por ejemplo)
             else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
                 // Obtengo un status code del intent recibido y lo visualizo por consola
                 Status status = Autocomplete.getStatusFromIntent(data);
+                Toast.makeText(getActivity().getApplicationContext(),"Error en la opcion de autocompletado",Toast.LENGTH_LONG).show();
                 System.out.println(status.getStatusMessage());
             }
             // Si el usuario cancela la busqueda de direccion en el fragment de Autocomplete
             else if (resultCode == RESULT_CANCELED) {
-                // The user canceled the operation.
+                Toast.makeText(getActivity().getApplicationContext(),"Busqueda cancelada",Toast.LENGTH_LONG).show();
             }
             return;
         }
