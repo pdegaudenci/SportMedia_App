@@ -103,15 +103,17 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
         // Inflate the layout for this fragment
         vista= inflater.inflate(R.layout.fragment_google_map, container, false);
         binding();
-        cargarAutocompletePlace();
+        cargarAPIGooglePlace();
         cargarMap();
         cargarListener();
         return vista;
     }
 
 
-
-    private void cargarAutocompletePlace() {
+    /**
+     * Metodo que Inicializa la API de Googl Places para el contexto de la aplicación con la clave API especificada en un recurso string de la carpeta values.
+     */
+    private void cargarAPIGooglePlace() {
         // Initialize the SDK con Api Key generada en la consola de google Cloud(Credenciales)
         if(!Places.isInitialized())
             Places.initialize(getActivity().getApplicationContext(), getString(R.string.apikey));
@@ -138,8 +140,51 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
         // Invoca al metodo onMapReady () , por lo que la Clase de este Fragment debe implementar la interfaz OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
+    /**
+     * Metodo que se ejecuta , una vez el mapa de la API de google Maps se ha cargado y nos permite establecer parametros de configuracion
+     *
+     * @param googleMap el objeto de la Clase GoogleMap que contiene el mapa cargado (obtenido con metodo getAsync)
+     */
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        // Inicializo el objeto nMap para acceder al mapa de Google maps
+        nMap=googleMap;
+
+        // Parametros de configuracion del mapa de la API
+        UiSettings uiSettings = nMap.getUiSettings();
+        uiSettings.setScrollGesturesEnabled(true);
+        uiSettings.setTiltGesturesEnabled(true);
+        // Establezco preferencias de zoom del mapa
+        uiSettings.setZoomControlsEnabled(true);
+
+        // listener para gestionar el evento de hacer un click sobre el mapa de la API de Google Map (Debe implementar la interfaz googleMap.OnMapClickListener)
+        this.nMap.setOnMapClickListener(this);
+        // listener para gestionar el evento de hacer un click largo sobre el mapa de la API de Google Map (Debe implementar la interfaz GoogleMap.OnMapLongClickListener )
+        this.nMap.setOnMapLongClickListener(this);
+        // listener que escucha evento de hacer click sobre ventana de informacion (Se debe implementar interfaz GoogleMap.OnInfoWindowClickListener)
+        this.nMap.setOnInfoWindowClickListener(this);
+    }
+
+
+
+    @Override
+    public void onMapClick(@NonNull LatLng latLng) {
+
+
+    }
+
+    @Override
+    public void onMapLongClick(@NonNull LatLng latLng) {
+
+    }
+
+    @Override
+    public void onInfoWindowClick(@NonNull Marker marker) {
+
+    }
 
     private void cargarListener() {
+        // Carga el listener del TextView para abrir el cuadro de busqueda de APi Place de google
         txt_direccion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -246,48 +291,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback, G
     }
 
 
-    /**
-     * Metodo que se ejecuta , una vez el mapa de la API de google Maps se ha cargado y nos permite establecer parametros de configuracion
-     *
-     * @param googleMap el objeto de la Clase GoogleMap que contiene el mapa cargado (obtenido con metodo getAsync)
-     */
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-      // Inicializo el objeto nMap para acceder al mapa de Google maps
-        nMap=googleMap;
-
-        // Parametros de configuracion del mapa de la API
-        UiSettings uiSettings = nMap.getUiSettings();
-        uiSettings.setScrollGesturesEnabled(true);
-        uiSettings.setTiltGesturesEnabled(true);
-        // Establezco preferencias de zoom del mapa
-        uiSettings.setZoomControlsEnabled(true);
-
-        // listener para gestionar el evento de hacer un click sobre el mapa de la API de Google Map (Debe implementar la interfaz googleMap.OnMapClickListener)
-        this.nMap.setOnMapClickListener(this);
-        // listener para gestionar el evento de hacer un click largo sobre el mapa de la API de Google Map (Debe implementar la interfaz GoogleMap.OnMapLongClickListener )
-        this.nMap.setOnMapLongClickListener(this);
-        // listener que escucha evento de hacer click sobre ventana de informacion (Se debe implementar interfaz GoogleMap.OnInfoWindowClickListener)
-        this.nMap.setOnInfoWindowClickListener(this);
-    }
-
-
-
-    @Override
-    public void onMapClick(@NonNull LatLng latLng) {
-
-
-    }
-
-    @Override
-    public void onMapLongClick(@NonNull LatLng latLng) {
-
-    }
-
-    @Override
-    public void onInfoWindowClick(@NonNull Marker marker) {
-
-        }
 
 
 }
