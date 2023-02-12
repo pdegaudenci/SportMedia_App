@@ -1,9 +1,8 @@
-package com.example.sportsmedia;
+package com.example.sportsmedia.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class Auxiliar {

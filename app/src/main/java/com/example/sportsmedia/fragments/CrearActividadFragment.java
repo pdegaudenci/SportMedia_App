@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.sportsmedia.Auxiliar;
+import com.example.sportsmedia.utils.Auxiliar;
 import com.example.sportsmedia.HomeActivity;
 import com.example.sportsmedia.R;
 import com.example.sportsmedia.dto.Actividad;
@@ -29,7 +29,6 @@ import com.example.sportsmedia.controller.FirebaseController;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
@@ -339,7 +338,7 @@ public class CrearActividadFragment extends Fragment {
      */
     private boolean registroActividad(Actividad actividad) {
         // Realiza la insercion, devuelve un objeto de la clase Task y se invoca a su metodo isSucccesful para evaluar si se realizó con exito la operacion
-        boolean correcta= firebase.getReference().child("Actividades").child(actividad.getUid()).setValue(actividad).isSuccessful();
+        boolean correcta= firebase.getReference().child("Actividades").child(actividad.getUid().toString()).setValue(actividad).isSuccessful();
 
         return correcta;
     }

@@ -14,6 +14,7 @@ public class Actividad {
     private String fecha;
     private String usuario;
 
+
     public Actividad(){
 
     }
@@ -108,5 +109,22 @@ public class Actividad {
 
     public void setDuracion(String duracion) {
         this.duracion = duracion;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Actividad{" +
+                "uid='" + uid + '\'' +
+                ", titulo='" + titulo + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", comunidad='" + comunidad + '\'' +
+                ", equipoEspecial=" + equipoEspecial +
+                ", horaInicio='" + horaInicio + '\'' +
+                ", horaFin='" + horaFin + '\'' +
+                ", duracion='" + duracion + '\'' +
+                ", fecha='" + fecha + '\'' +
+                ", usuario='" + usuario + '\'' +
+                '}';
     }
 }

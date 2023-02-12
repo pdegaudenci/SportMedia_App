@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,32 +11,32 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ActividadesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/text"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_Misactividades"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_crearActividad2"
-        android:text="Log in"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf= "@+id/text"
-        app:layout_constraintRight_toRightOf="@+id/text"
-
-        app:layout_constraintLeft_toLeftOf="@+id/text"
-        android:layout_marginLeft="16dp"
-        android:textColor="@android:color/white"
-        />
-    <LinearLayout
-        android:id="@+id/fragment_newActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/btn_crearActividad2"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="224dp"
+        android:text="Crear nueva actividad"
+        android:textColor="@android:color/white"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="@+id/recycler_Misactividades"
+        app:layout_constraintRight_toRightOf="@+id/recycler_Misactividades"
+        app:layout_constraintTop_toBottomOf="@+id/recycler_Misactividades"
+        />
 
-        >
-  </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>

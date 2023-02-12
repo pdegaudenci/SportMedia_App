@@ -15,25 +15,47 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.sportsmedia.dto.Actividad;
 import com.example.sportsmedia.fragments.ActividadesFragment;
 import com.example.sportsmedia.fragments.HomeFragment;
 import com.example.sportsmedia.fragments.RedFragment;
 import com.example.sportsmedia.dto.Usuario;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+
 public class HomeActivity extends AppCompatActivity {
     private static Usuario userglobal;
     private TextView user;
     private NavigationView navigationView;
+
+    private static ArrayList<Actividad> misActividades=new ArrayList<>();
+
+    private static ArrayList<Actividad> actividadesSociales=new ArrayList<>();
+    public Context context;
+    DrawerLayout drawerLayout;
+
     public static Usuario getUserglobal() {
         return userglobal;
     }
-    public Context context;
     public static void setUserglobal(Usuario userglobal) {
         HomeActivity.userglobal = userglobal;
     }
-    DrawerLayout drawerLayout;
+    public static ArrayList<Actividad> getMyActividades() {
+        return misActividades;
+    }
 
+    public static ArrayList<Actividad> getActividades() {
+        return actividadesSociales;
+    }
+
+    public static void setMisActividades(ArrayList<Actividad> misActividades) {
+        HomeActivity.misActividades = misActividades;
+    }
+
+    public static void setActividadesSociales(ArrayList<Actividad> actividadesSociales) {
+        HomeActivity.actividadesSociales = actividadesSociales;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

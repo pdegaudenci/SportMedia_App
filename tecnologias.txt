@@ -1,0 +1,10 @@
+Permision en android manifest
+glide
+firebase y solicitudes asyncronas
+fragments
+REcyclerView
+
+/*
+       
+
+    }*/
