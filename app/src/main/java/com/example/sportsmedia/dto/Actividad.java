@@ -1,10 +1,11 @@
 package com.example.sportsmedia.dto;
 
-public class Actividad {
+import java.io.Serializable;
+
+public class Actividad implements Serializable {
     private String uid;
     private String titulo;
     private String descripcion;
-
     private String comunidad;
     private boolean equipoEspecial;
     private String horaInicio;
@@ -13,6 +14,46 @@ public class Actividad {
     private String duracion;
     private String fecha;
     private String usuario;
+    private double latitud;
+    private double longitud;
+    private String nombreLugar;
+    private String direccion;
+
+    private boolean activada=true;
+
+    private Integer cantPersonas=0;
+
+    public double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
+    public double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
+    }
+
+    public String getNombreLugar() {
+        return nombreLugar;
+    }
+
+    public void setNombreLugar(String nombreLugar) {
+        this.nombreLugar = nombreLugar;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
 
 
     public Actividad(){
@@ -111,6 +152,21 @@ public class Actividad {
         this.duracion = duracion;
     }
 
+    public boolean isActivada() {
+        return activada;
+    }
+
+    public void setActivada(boolean activada) {
+        this.activada = activada;
+    }
+
+    public Integer getCantPersonas() {
+        return cantPersonas;
+    }
+
+    public void setCantPersonas(Integer cantPersonas) {
+        this.cantPersonas = cantPersonas;
+    }
 
     @Override
     public String toString() {
@@ -125,6 +181,12 @@ public class Actividad {
                 ", duracion='" + duracion + '\'' +
                 ", fecha='" + fecha + '\'' +
                 ", usuario='" + usuario + '\'' +
+                ", latitud=" + latitud +
+                ", longitud=" + longitud +
+                ", nombreLugar='" + nombreLugar + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", activada=" + activada +
+                ", cantPersonas=" + cantPersonas +
                 '}';
     }
 }

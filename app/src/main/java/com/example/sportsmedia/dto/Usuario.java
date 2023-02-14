@@ -9,7 +9,7 @@ public class Usuario {
     private String username,nombre,apellido,password,fechanac,email;
     private String uid;
     // Atributo que contiene a las actividades inscriptas del usuario
-    private ArrayList<Actividad> actividades;
+    private ArrayList<String> idActividades;
 
     /**
      * CONSTRUCTORES
@@ -88,12 +88,13 @@ public class Usuario {
         this.uid = uid;
     }
 
-    public ArrayList<Actividad> getActividades() {
-        return actividades;
+
+    public ArrayList<String> getIdActividades() {
+        return idActividades;
     }
 
-    public void setActividades(ArrayList<Actividad> actividades) {
-        this.actividades = actividades;
+    public void setIdActividades(ArrayList<String> idActividades) {
+        this.idActividades = idActividades;
     }
 
     @Override

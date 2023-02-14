@@ -68,7 +68,7 @@ public class Auxiliar {
                 Date horarioFin = parseador.parse(horaFin);
 
                 int mlsMinuto = 60000;
-                diferencia =(long) ((horarioFin.getTime() - horarioInicio.getTime())/mlsMinuto);
+                diferencia =(long) ((horarioFin.getTime() - horarioInicio.getTime())/mlsMinuto) -1;
 
             } catch (ParseException e) {
                 Logger.getLogger("logger").info("ERROR en calculo de minutos en diferencia horaria "+Auxiliar.class);

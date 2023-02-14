@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 
 import android.content.Context;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
     private static Usuario userglobal;
+
+    public static FragmentManager manager;
     private TextView user;
     private NavigationView navigationView;
 
@@ -63,8 +66,8 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         String text = getString(R.string.welcome, getUserglobal().getNombre());
-
-
+        // Instancio un Administrador de fragmentos de la actividad contenedora que será accesible desde otros fragments
+        manager=getSupportFragmentManager();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
@@ -93,34 +96,38 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment fragment=null;
+                String tag="";
                 boolean fragmentTransaction = false;
                 switch (item.getItemId()){
                     case R.id.nav_activities:
                         fragment = new ActividadesFragment();
-                        ActividadesFragment actividadesFragment= (ActividadesFragment) fragment;
+                        tag="actividades";
                         fragmentTransaction = true;
                         break;
                     case R.id.nav_red:
                         fragment = new RedFragment();
+                        tag="social";
                         fragmentTransaction = true;
                         break;
                     case R.id.nav_home:
                         fragment = new HomeFragment();
+                        tag="home";
                         fragmentTransaction = true;
                         break;
                 }
 
                 if (fragmentTransaction){
-                    changeFragment (fragment , item );
+                    changeFragment (fragment , item ,tag);
                     drawerLayout.closeDrawers();
                 }
                 return true;
             }
         });
     }
-    /*
-   Metodo que visualiza / oculta el icono de apertura del menu lateral ,
-   en funcion de que el menu este desplegado o no
+
+    /**
+     * Metodo que visualiza / oculta el icono de apertura del menu lateral , en funcion de que el menu este desplegado o no.
+     * Se sobreescribe metodo onBackPressed(), el cual controla los eventos del boton atrás del dispositivo
      */
     @Override
     public void onBackPressed() {
@@ -132,19 +139,35 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     /**
+     * Metodo estatico que proporciona el Fragment manager de la Activity contenedora a los fragments secundarios que lo invocan
+     * para poder ejecutar transacciones de fragments.
+     * FragmentManager: es la clase responsable de realizar acciones en los fragmentos de tu app, como
+     * agregarlos, quitarlos o reemplazarlos, así como agregarlos a la pila de actividades.
+     * @return FragmentManager
+     */
+    public static FragmentManager getManager() {
+        return manager;
+    }
+
+    /**
      * Metodo para cambiar los fragment a visualizar , dentro de la actividad principal
      * Recibe por parámetro, el fragment a cargar en la activity_home , en el elemento con id fragment
-     * @param fragment
-     * @param item
+     * @param fragment que debe cargarse y reemplazará al actual fragment
+     * @param item elemento del navigationView seleccionado
      */
-    private void changeFragment( Fragment fragment, MenuItem item){
+    public void changeFragment( Fragment fragment, MenuItem item,String tag){
+
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment , fragment)
+                .add(R.id.fragment , fragment,tag).addToBackStack(null)
                 .commit();
-        item.setChecked(true);
-        // Seteo titulo superior del fragment cargado
-        getSupportActionBar().setTitle(item.getTitle());
+
+            item.setChecked(true);
+            // Seteo titulo superior del fragment cargado
+            getSupportActionBar().setTitle(item.getTitle());
+
+
+
     }
 
 

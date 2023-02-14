@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/quantum_grey"
+    >
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        android:typeface="monospace"
+        android:textStyle="bold"
+        android:shadowColor="#F5A623"
+        android:shadowDx="12"
+        android:shadowDy="12"
+        android:shadowRadius="8"
+        android:text="Android"
+        android:textSize="48dp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_descripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        android:gravity="center"
+        android:text="Android"
+        android:textSize="24dp"
+
+        app:layout_constraintTop_toBottomOf="@+id/txt_titulo"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_comunidad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="Android"
+        android:textSize="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_descripcion"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_equipo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="Android"
+        android:textSize="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_comunidad"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_fecha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="Android"
+        android:textSize="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_equipo"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_horario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="Android"
+        android:textSize="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_fecha"
+        tools:layout_editor_absoluteX="0dp" />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_lugar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="Android"
+        android:textSize="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_horario"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_direccion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="Android"
+        android:textSize="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_lugar"
+        tools:layout_editor_absoluteX="0dp" />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/txt_cantidadPersonas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="Android"
+        android:textSize="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_direccion"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/btn_borrarActividad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="45dp"
+        android:background="@drawable/bg_button"
+        android:hint="Borrar actividad"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_cantidadPersonas"
+        />
+
+    <ImageView
+        android:id="@+id/icono_detalle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="60dp"
+        android:padding="2px"
+        android:paddingLeft="2px"
+        android:paddingTop="2px"
+        android:src="@mipmap/ic_launcher_foreground"
+        app:layout_constraintCircleRadius="@dimen/cardview_default_elevation"
+        app:layout_constraintStart_toStartOf="@+id/btn_borrarActividad"
+        app:layout_constraintTop_toBottomOf="@+id/btn_borrarActividad" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

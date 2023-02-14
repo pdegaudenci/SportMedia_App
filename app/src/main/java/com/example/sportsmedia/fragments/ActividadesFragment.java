@@ -35,6 +35,7 @@ import java.util.ArrayList;
  */
 public class ActividadesFragment extends Fragment {
 
+
     private RecyclerView mRecyclerView;
     private ActividadesAdapter mAdapter;
     private FirebaseController firebase;
@@ -56,6 +57,7 @@ public class ActividadesFragment extends Fragment {
     private String mParam2;
     private Button btn_crearActividad;
     public View.OnClickListener listener;
+
 
     public ActividadesFragment() {
         // Required empty public constructor
@@ -139,9 +141,11 @@ public class ActividadesFragment extends Fragment {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                // Seteo las activididades cargadas previamente
+                ActividadesFragment.misActividades.clear();
                 for (DataSnapshot element: snapshot.getChildren()){
                     Actividad  activityAux= element.getValue(Actividad.class);
+
                     if(activityAux.getUsuario().equals(HomeActivity.getUserglobal().getUsername()))
                         ActividadesFragment.misActividades.add(activityAux);
 

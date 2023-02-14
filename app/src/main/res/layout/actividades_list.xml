@@ -67,6 +67,14 @@
             android:textColor="#D3D3D3"
             android:textSize="18dp"
             />
+    <TextView
+        android:id="@+id/inscriptos"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="#D3D3D3"
+        android:textSize="18dp"
+        />
         />
     <Button
         android:id="@+id/btn_detalle"

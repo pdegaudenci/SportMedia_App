@@ -25,10 +25,10 @@
 
 
     <fragment
-        android:id="@+id/fragment_map"
+        android:id="@+id/fragment_map1"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="300dp"
         app:layout_constraintTop_toBottomOf="@id/txt_direccion"
         app:layout_constraintStart_toStartOf="parent"
     map:cameraZoom="10"
