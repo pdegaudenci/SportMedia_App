@@ -9,10 +9,16 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.sportsmedia.HomeActivity;
 import com.example.sportsmedia.R;
+import com.example.sportsmedia.controller.FirebaseController;
 import com.example.sportsmedia.dto.Actividad;
+import com.example.sportsmedia.utils.AuxiliarUI;
+import com.google.firebase.database.DatabaseReference;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +29,11 @@ public class ActivityDetailFragment extends Fragment {
 
     private TextView txt_titulo,txt_descripcion,txt_comunidad,txt_equipo,txt_fecha,txt_horaio,txt_lugar,txt_direccion,txt_inscripto;
     private View vista;
+    private Button btn_borrar;
+    FirebaseController firebase;
+    Actividad actividad;
+
+    DatabaseReference db;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,6 +73,8 @@ public class ActivityDetailFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        // Obtengo controlador de firebase para poder interactuar con mi BBDD
+        firebase= new FirebaseController("Actividades",getContext());
 
         // Gestiono evento del boton atrás del dispositivo
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
@@ -73,13 +86,26 @@ public class ActivityDetailFragment extends Fragment {
 
                     getFragmentManager().popBackStack();
                 } else {
-                    getFragmentManager().popBackStack();//No se porqué puse lo mismo O.o
+                    getFragmentManager().popBackStack();
                 }
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
+    /**
+     * Metodo que se ejecuta al visualizar el fragment en la pantalla, vinculando la variable
+     * de tipo View con el fichero xml que contiene el diseño del fragment , a través de inflate.
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return View con el objeto inflado que representa al
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,12 +113,23 @@ public class ActivityDetailFragment extends Fragment {
         vista= inflater.inflate(R.layout.fragment_activity_detail, container, false);
         binding(vista);
         obtenerDetallesActividad(savedInstanceState);
+        listener();
+
+        // Referencia a nodo que de la BBDD que contiene actividad
+        db=firebase.getReference().child("Actividades").child(actividad.getUid());
         return vista;
     }
 
+    /**
+     * Obtiene parametros enviados con fragment que invocó al actual
+     * a traves de un objeto Bundle y crea una nueva actividad con la actividad
+     * seleccionada en el recyclerView
+     * @param savedInstanceState Bundle
+     */
     private void obtenerDetallesActividad(Bundle savedInstanceState) {
+
         Bundle datos= getArguments();
-        Actividad actividad =(Actividad)datos.getSerializable("actividad");
+        actividad =(Actividad)datos.getSerializable("actividad");
         txt_titulo.setText(actividad.getTitulo());
         txt_descripcion.setText("Descripcion:"+actividad.getDescripcion());
         txt_comunidad.setText("Comunidad autonoma: "+actividad.getComunidad());
@@ -117,7 +154,31 @@ public class ActivityDetailFragment extends Fragment {
         txt_lugar= vista.findViewById(R.id.txt_lugar);
         txt_direccion= vista.findViewById(R.id.txt_direccion);
         txt_inscripto= vista.findViewById(R.id.txt_cantidadPersonas);
+        btn_borrar=vista.findViewById(R.id.btn_borrarActividad);
+
     }
+
+    private void listener(){
+        btn_borrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Le paso la actividad contenedora del actual fragment
+                boolean borrado = AuxiliarUI.ventanaDialogo("Deseas eliminar esta actividad?",getActivity());
+
+                if(borrado){
+                    db.removeValue();
+                    Toast.makeText(getContext(),"Actividad borrada correctamente",Toast.LENGTH_LONG);
+
+                    // vuelvo al fragment anterior
+                    getFragmentManager().popBackStack();
+                }
+                else{
+                    Toast.makeText(getContext(),"No se borro actividad",Toast.LENGTH_LONG);
+                }
+            }
+        });
+    }
+
 
 
 }
