@@ -614,7 +614,7 @@ public class CrearActividadFragment extends Fragment implements OnMapReadyCallba
      */
     private boolean registroActividad(Actividad actividad) {
         // Realiza la insercion, devuelve un objeto de la clase Task y se invoca a su metodo isSucccesful para evaluar si se realizó con exito la operacion
-        boolean correcta= firebase.getReference().child("Actividades").child(actividad.getUid().toString()).setValue(actividad).isSuccessful();
+        boolean correcta= firebase.getReference().child(actividad.getUid().toString()).setValue(actividad).isSuccessful();
 
         return correcta;
     }

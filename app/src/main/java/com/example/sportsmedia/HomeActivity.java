@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentManager;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -97,10 +98,13 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment fragment=null;
                 String tag="";
+                Bundle bundle=new Bundle();
                 boolean fragmentTransaction = false;
                 switch (item.getItemId()){
                     case R.id.nav_activities:
                         fragment = new ActividadesFragment();
+                        bundle.putString("tipo","misActividades");
+                        fragment.setArguments(bundle);
                         tag="actividades";
                         fragmentTransaction = true;
                         break;
@@ -114,6 +118,13 @@ public class HomeActivity extends AppCompatActivity {
                         tag="home";
                         fragmentTransaction = true;
                         break;
+
+                    case R.id.nav_cerrar_sesion:
+                        setUserglobal(null);
+                        Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                        startActivity(intent);
+                        break;
+
                 }
 
                 if (fragmentTransaction){
@@ -159,7 +170,7 @@ public class HomeActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.fragment , fragment,tag).addToBackStack(null)
+                .replace(R.id.fragment , fragment,tag).addToBackStack(null)
                 .commit();
 
             item.setChecked(true);

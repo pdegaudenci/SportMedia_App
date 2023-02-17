@@ -4,10 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -19,6 +24,7 @@ import com.example.sportsmedia.adapter.ActividadesAdapter;
 import com.example.sportsmedia.controller.FirebaseController;
 import com.example.sportsmedia.dto.Actividad;
 import com.example.sportsmedia.dto.Usuario;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -36,6 +42,8 @@ public class RedFragment extends Fragment {
     private FirebaseController firebase;
     private View vista;
     private ArrayList<Actividad> misActividades;
+
+    private Toolbar toolbar;
 
     private static ArrayList<Actividad> myDataSet=new ArrayList<>();
 
@@ -86,46 +94,77 @@ public class RedFragment extends Fragment {
         // Inflate the layout for this fragment
         vista=inflater.inflate(R.layout.fragment_red, container, false);
         // Binding con la interfaz recyclerView y con la BBDD firebase
-        binding();
-        loadData();
-        // Asigno al recyclerView el adapter que gestiona las vistas
-        mAdapter = new ActividadesAdapter(myDataSet,getActivity().getApplicationContext());
-        mRecyclerView.setAdapter(mAdapter);
+        //binding();
+        setToolbar(vista);
 
         return vista;
     }
 private void binding(){
-    mRecyclerView=  (RecyclerView) vista.findViewById(R.id.recycler_actividades);
-    mRecyclerView.setHasFixedSize(true);
-    // Creo un controlller donde
-    firebase = new FirebaseController("Actividades",getContext());
+    toolbar = vista.findViewById(R.id.toolbar_social);
 }
-    private void loadData() {
-        cargaDatosActividades();
-        misActividades=HomeActivity.getMyActividades();
-        myDataSet=misActividades;
-    }
 
-    private void cargaDatosActividades(){
-        firebase.getReference().child("Actividades").addValueEventListener(new ValueEventListener() {
+
+    /**
+     * Visualiza toolbar en la parte superior del fragment con las opciones del menu
+     * y asigna un listener para gestionar el evento al hacer click sobre cada item del toolbar
+     *
+     * @param view
+     */
+    public void setToolbar(View view){
+        setHasOptionsMenu(true);
+        toolbar = view.findViewById(R.id.toolbar_social);
+        //((AppCompatActivity) this.getActivity()).setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.menu_social);
+        Menu menu = toolbar.getMenu();
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public boolean onMenuItemClick(MenuItem item) {
+                Fragment fragment=null;
+                String tipo="";
+                boolean transaccion=false;
+                switch (item.getItemId()){
+                    //Aquí pones tantos 'case' como items tengas en el menú
+                    case R.id.disponibles_item:
+                        tipo="sociales";
+                        transaccion=true;
+                        break;
+                    case R.id.suscripciones_item:
+                        tipo="inscripciones";
+                        transaccion=true;
+                        break;
 
-                for (DataSnapshot element: snapshot.getChildren()){
-                    Actividad activityAux = element.getValue(Actividad.class);
-
-                    if(activityAux.getUsuario().equals(HomeActivity.getUserglobal())){
-                        HomeActivity.getMyActividades().add(activityAux);
-                    }
-                    else{
-                        HomeActivity.getActividades().add(activityAux);
-                    }
+                    case R.id.filtrar_item:
+                        tipo="filtrar";
+                        transaccion=true;
+                        break;
                 }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+                if(transaccion && !tipo.equalsIgnoreCase("filtrar")){
+                    // Reutilizacion del fragment ActividadesFragment, el cual reutiliza recyclerView
+                    // Y el adapter se conectara a una u otra fuente de datos  en funcion de valor del
+                    // objeto Bundle pasado por parametro
+                    fragment =new ActividadesFragment();
+                    cargarFragment(fragment,tipo);
+                    item.setChecked(true);
+                }
+                else if(tipo.equalsIgnoreCase("filtrar"))
+                    System.out.println("Hollaaaa");
+                return true;
             }
         });
     }
+
+    /**
+     * Metodo que carga un fragmento debajo del toolbar y le proporciona informacion a traves del objeto
+     * bundle.
+     * @param fragmento
+     * @param argumento
+     */
+    public void cargarFragment(Fragment fragmento,String argumento){
+        Bundle bundle = new Bundle();
+        bundle.putString("tipo",argumento);
+        fragmento.setArguments(bundle);
+        if(fragmento!=null)
+            HomeActivity.manager.beginTransaction().replace(R.id.fragment_red,fragmento).addToBackStack(null).commit();
+}
+
 }

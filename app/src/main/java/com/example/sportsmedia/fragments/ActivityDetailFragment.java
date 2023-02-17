@@ -30,10 +30,12 @@ public class ActivityDetailFragment extends Fragment {
     private TextView txt_titulo,txt_descripcion,txt_comunidad,txt_equipo,txt_fecha,txt_horaio,txt_lugar,txt_direccion,txt_inscripto;
     private View vista;
     private Button btn_borrar;
+    private Button btn_suscripcion;
+    private Button btn_borrar_suscripcion;
     FirebaseController firebase;
-    Actividad actividad;
-
-    DatabaseReference db;
+    private Actividad actividad;
+    private DatabaseReference db;
+    private String tipo;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -63,6 +65,7 @@ public class ActivityDetailFragment extends Fragment {
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -72,6 +75,7 @@ public class ActivityDetailFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            tipo =savedInstanceState.getString("tipo");
         }
         // Obtengo controlador de firebase para poder interactuar con mi BBDD
         firebase= new FirebaseController("Actividades",getContext());
@@ -116,7 +120,7 @@ public class ActivityDetailFragment extends Fragment {
         listener();
 
         // Referencia a nodo que de la BBDD que contiene actividad
-        db=firebase.getReference().child("Actividades").child(actividad.getUid());
+        db=firebase.getReference().child(actividad.getUid());
         return vista;
     }
 
@@ -140,8 +144,6 @@ public class ActivityDetailFragment extends Fragment {
         txt_direccion.setText("Direccion: "+actividad.getDireccion());
         Integer inscriptos=actividad.getCantPersonas();
         txt_inscripto.setText("Cantidad de personas inscriptas: "+(inscriptos==null?0:inscriptos));
-
-
     }
 
     private void binding(View vista) {
@@ -155,10 +157,35 @@ public class ActivityDetailFragment extends Fragment {
         txt_direccion= vista.findViewById(R.id.txt_direccion);
         txt_inscripto= vista.findViewById(R.id.txt_cantidadPersonas);
         btn_borrar=vista.findViewById(R.id.btn_borrarActividad);
+        btn_suscripcion=vista.findViewById(R.id.btn_subscripcion);
+        btn_borrar_suscripcion=vista.findViewById(R.id.btn_borrar_subscripcion);
+
+        // En funcion del tipo de actividades , visualizo uno de los 3 posibles botones
+        if(tipo.equals("sociales")){
+            btn_suscripcion.setVisibility(View.VISIBLE);
+        }
+        else if(tipo.equals("inscripciones")){
+            btn_borrar_suscripcion.setVisibility(View.VISIBLE);
+        }
+        else {
+            btn_borrar.setVisibility(View.VISIBLE);
+        }
 
     }
 
     private void listener(){
+        btn_borrar_suscripcion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        btn_suscripcion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         btn_borrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -23,7 +23,7 @@
             android:title="@string/red_actividades"/>
 
         <item
-            android:id="@+id/nav_share"
+            android:id="@+id/nav_cerrar_sesion"
             android:icon="@mipmap/ic_logout_foreground"
             android:title="@string/logout" />
 

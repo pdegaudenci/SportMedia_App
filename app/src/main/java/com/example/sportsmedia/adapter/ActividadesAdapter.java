@@ -35,10 +35,12 @@ public class ActividadesAdapter extends RecyclerView.Adapter<ActividadesAdapter.
 
     private ArrayList<Actividad> mDataSet;
     private Context context;
+    private static String tipo;
 
-    public ActividadesAdapter(ArrayList<Actividad> myDataSet, Context cont) {
+    public ActividadesAdapter(ArrayList<Actividad> myDataSet, Context cont,String tipo) {
         mDataSet = myDataSet;
         System.out.println(myDataSet);
+        ActividadesAdapter.tipo=tipo;
         context=cont;
         Log.d("Creacion Adapter", "Carga de los datos a utilizar por el adaptador realizada correctamente");
     }
@@ -62,17 +64,16 @@ public class ActividadesAdapter extends RecyclerView.Adapter<ActividadesAdapter.
         private Button btnDetails;
 
 
+
         // Cada View v es cada una de las vistas que queremos visualizar
         public ViewHolder(View v) {
-
             super(v);
-
             // Obtengo elementos de cada RecyclerView
             binding(v);
-
         }
 
         private void binding(View v) {
+
             context = v.getContext();
             txtHeader = (TextView) v.findViewById(R.id.header_actividad);
             lugar = (TextView) v.findViewById(R.id.lugar_actividad);
@@ -97,16 +98,13 @@ public class ActividadesAdapter extends RecyclerView.Adapter<ActividadesAdapter.
             // Creo objeto bundle que almacenará informacion de la actividad y se transmitirá en la trasaccion entre fragments
             Bundle bundle= new Bundle();
             bundle.putSerializable("actividad",actividad);
-
+            bundle.putString("tipo",tipo);
             Fragment fragmento = new ActivityDetailFragment();
 
             // Al fragment le proporciono argumentos
             fragmento.setArguments(bundle);
             // add apila los fragmentos y eso hace que, cuando presione el boton atras se regresa al anterior fragment
             HomeActivity.manager.beginTransaction().add(R.id.fragment,fragmento).addToBackStack(null).commit();
-
-
-
 
         }
 

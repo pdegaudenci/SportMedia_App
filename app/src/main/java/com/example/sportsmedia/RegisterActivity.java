@@ -11,12 +11,14 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.sportsmedia.dto.Actividad;
 import com.example.sportsmedia.fragments.DatePickerFragment;
 import com.example.sportsmedia.dto.Usuario;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -135,6 +137,7 @@ public class RegisterActivity extends AppCompatActivity {
             usuario.setPassword(passwd);
             usuario.setEmail(correo);
             usuario.setFechanac(nacimiento);
+            usuario.setIdActividades(new ArrayList<String>());
         }
         return usuario;
     }
@@ -142,7 +145,7 @@ public class RegisterActivity extends AppCompatActivity {
     public void registroUsuario(Usuario user){
 
         reference.child("Usuarios").child(user.getUid()).setValue(user);
-        System.err.println("AGREGADO USUARIO");
+        Toast.makeText(getApplicationContext(),"Registro correcto. Logueate con tu usuario",Toast.LENGTH_LONG);
     }
 
     public boolean validatePassword(String pass, String confirm){

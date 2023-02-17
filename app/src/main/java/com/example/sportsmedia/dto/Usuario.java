@@ -9,7 +9,7 @@ public class Usuario {
     private String username,nombre,apellido,password,fechanac,email;
     private String uid;
     // Atributo que contiene a las actividades inscriptas del usuario
-    private ArrayList<String> idActividades;
+    private ArrayList<String> idActividades=new ArrayList<>();
 
     /**
      * CONSTRUCTORES

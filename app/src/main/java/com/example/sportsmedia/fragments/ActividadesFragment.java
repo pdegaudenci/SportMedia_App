@@ -3,6 +3,7 @@ package com.example.sportsmedia.fragments;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.sportsmedia.HomeActivity;
 import com.example.sportsmedia.R;
@@ -42,11 +44,14 @@ public class ActividadesFragment extends Fragment {
     private View vista;
     private ArrayList<Actividad> myDataSet;
 
-    ArrayList<Actividad> actividades=new ArrayList<>();
+    private static ArrayList<Actividad> actividades=new ArrayList<>();
 
+    private ViewGroup grupoVistas;
+    private static ArrayList<Actividad> misActividades=new ArrayList<>();
 
-    private static ArrayList<Actividad> misActividades=new ArrayList<>();;
+    private static ArrayList<Actividad> misInscripciones=new ArrayList<>();
 
+    private String textoVacio;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -57,7 +62,7 @@ public class ActividadesFragment extends Fragment {
     private String mParam2;
     private Button btn_crearActividad;
     public View.OnClickListener listener;
-
+    private String tipo="";
 
     public ActividadesFragment() {
         // Required empty public constructor
@@ -87,6 +92,8 @@ public class ActividadesFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            Bundle bundle=getArguments();
+            tipo=bundle.getString("tipo");
         }
 
     }
@@ -100,23 +107,46 @@ public class ActividadesFragment extends Fragment {
         binding();
         loadData();
         // Asigno al recyclerView el adapter que gestiona las vistas
-        mAdapter = new ActividadesAdapter(myDataSet,getActivity().getApplicationContext());
-        mRecyclerView.setAdapter(mAdapter);
-        btn_crearActividad =vista.findViewById(R.id.btn_crearActividad2);
-        btn_crearActividad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btn_crearActividad.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+        mAdapter = new ActividadesAdapter(myDataSet,getActivity().getApplicationContext(),tipo);
+        if(mAdapter.getItemCount()!=0){
+            // Asigno al recyclerView el adapter que gestiona las vistas
+            mRecyclerView.setAdapter(mAdapter);
+        }
+        else{
+            // En caso de que el usuario no tenga actividades creados, creo un textview de forma dinamica
+            grupoVistas=  (ViewGroup) vista.findViewById(R.id.contenedorActividades);
+            LayoutInflater inflador = LayoutInflater.from(getContext());
+            int id = R.layout.empty_layout;
 
-                        FragmentManager manager= getActivity().getSupportFragmentManager();
-                        FragmentTransaction ft= manager.beginTransaction().replace(R.id.fragment, new CrearActividadFragment());
-                        ft.commit();
-                    }
-                });
-            }
-        });
+            ConstraintLayout relativeLayout = (ConstraintLayout) inflador.inflate(id, null, false);
+
+            TextView textView = (TextView) relativeLayout.findViewById(R.id.txt_vacio);
+            textView.setText(textoVacio);
+
+            grupoVistas.addView(relativeLayout);
+
+        }
+        btn_crearActividad =vista.findViewById(R.id.btn_crearActividad2);
+        if(tipo.equalsIgnoreCase("misActividades"))
+        {
+            btn_crearActividad.setVisibility(View.VISIBLE);
+            btn_crearActividad.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    btn_crearActividad.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            FragmentManager manager= getActivity().getSupportFragmentManager();
+                            FragmentTransaction ft= manager.beginTransaction().replace(R.id.fragment, new CrearActividadFragment());
+                            ft.commit();
+                        }
+                    });
+                }
+            });
+        }
+
+
         // Cargo Fragment handler
 
 
@@ -124,6 +154,7 @@ public class ActividadesFragment extends Fragment {
     }
 
     private void binding(){
+        btn_crearActividad =vista.findViewById(R.id.btn_crearActividad2);
         mRecyclerView=  (RecyclerView) vista.findViewById(R.id.recycler_Misactividades);
         mRecyclerView.setHasFixedSize(true);
         // Creo un controlller donde
@@ -131,13 +162,23 @@ public class ActividadesFragment extends Fragment {
     }
     private void loadData() {
         cargaDatosActividades();
-        myDataSet= ActividadesFragment.misActividades;
-
+        if(tipo.equalsIgnoreCase("sociales"))
+        {
+            textoVacio="No hay actividades sociales disponibles";
+            myDataSet= ActividadesFragment.actividades;
+        }
+        if(tipo.equalsIgnoreCase("inscripciones")){
+            textoVacio="No estas suscripto a ninguna actividad";
+            myDataSet= ActividadesFragment.misInscripciones;
+        }
+        else{
+            textoVacio="No has creado ninguna actividad";
+            myDataSet= ActividadesFragment.misActividades;
+        }
     }
 
     private void cargaDatosActividades(){
-
-        firebase.getReference().child("Actividades").addValueEventListener(new ValueEventListener() {
+        firebase.getReference().addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -148,7 +189,12 @@ public class ActividadesFragment extends Fragment {
 
                     if(activityAux.getUsuario().equals(HomeActivity.getUserglobal().getUsername()))
                         ActividadesFragment.misActividades.add(activityAux);
-
+                    else {
+                        if(HomeActivity.getUserglobal().getIdActividades().contains(activityAux.getUid()))
+                            ActividadesFragment.misInscripciones.add(activityAux);
+                        else
+                            ActividadesFragment.actividades.add(activityAux);
+                    }
                 }
 
                 mAdapter.notifyDataSetChanged();

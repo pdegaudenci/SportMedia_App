@@ -123,6 +123,37 @@
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:textSize="15sp"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@+id/txt_cantidadPersonas"
+        />
+
+    <Button
+        android:id="@+id/btn_subscripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:visibility="invisible"
+        android:layout_marginTop="45dp"
+        android:background="@drawable/bg_button"
+        android:hint="Suscribirse"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_cantidadPersonas"
+        />
+
+    <Button
+        android:id="@+id/btn_borrar_subscripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:visibility="invisible"
+        android:layout_marginTop="45dp"
+        android:background="@drawable/bg_button"
+        android:hint="Anular suscribipción"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textSize="15sp"
         app:layout_constraintTop_toBottomOf="@+id/txt_cantidadPersonas"
         />
 
