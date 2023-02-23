@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".RegisterActivity">
+
+    <ScrollView
+        android:id="@+id/ScrollView01"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:orientation="vertical"
+            android:layout_height="fill_parent"
+            android:background="#3ed632">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nombre"
+                style="@style/edit_text"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_name_modificar"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Apellidos"
+                style="@style/edit_text"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_apellido_modificar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                   />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layout_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese email"
+                style="@style/edit_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email_modificar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ingrese fecha nacimiento"
+                style="@style/edit_text"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_fecha_nacimiento_modificar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:maxLines="1"
+
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_modificar_datos1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/bg_button"
+                android:hint="@string/btn_modificar"
+                android:textColorHint="#FFFFFF"
+                android:textSize="15sp"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

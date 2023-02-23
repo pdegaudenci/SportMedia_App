@@ -8,6 +8,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -41,6 +42,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -228,7 +231,7 @@ public class CrearActividadFragment extends Fragment implements OnMapReadyCallba
             nMap = googleMap;
 
             // Establezco valores minimos y maximo de de zoom
-            nMap.setMinZoomPreference(1.0f);
+            nMap.setMinZoomPreference(0.3f);
             nMap.setMaxZoomPreference(14.0f);
 
             // Parametros de configuracion de los controles del mapa de la API
@@ -252,10 +255,12 @@ public class CrearActividadFragment extends Fragment implements OnMapReadyCallba
                     nMap.setMyLocationEnabled(true);
                 }
             });
-
-            LatLng latLng =new LatLng(34.9,151.0);
-            nMap.addMarker(new MarkerOptions().position(latLng).title("Posicion"));
-            nMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            nMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(40.502,-3.683),6));
+            Circle circle = nMap.addCircle(new CircleOptions()
+                    .center(new LatLng(40.502,-3.683))
+                    .radius(10000)
+                    .strokeColor(Color.RED)
+                    .fillColor(Color.WHITE));
 
             // listener para gestionar el evento de hacer un click sobre el mapa de la API de Google Map (Debe implementar la interfaz googleMap.OnMapClickListener)
             nMap.setOnMapClickListener(this);
@@ -352,7 +357,11 @@ public class CrearActividadFragment extends Fragment implements OnMapReadyCallba
                         Toast.makeText(getActivity().getApplicationContext(), "Error al crear la actividad", Toast.LENGTH_SHORT).show();
                     // Una vez creada la actividad se invoca al fragment de actividades para que se acargado
                     FragmentManager manager= getActivity().getSupportFragmentManager();
-                    FragmentTransaction ft= manager.beginTransaction().replace(R.id.fragment, new ActividadesFragment());
+                    Bundle bundle=new Bundle();
+                    bundle.putString("tipo","misActividades");
+                    ActividadesFragment actividadesFragment=new ActividadesFragment();
+                    actividadesFragment.setArguments(bundle);
+                    FragmentTransaction ft= manager.beginTransaction().replace(R.id.fragment, actividadesFragment);
                     ft.commit();
                 }
                 else{
@@ -657,7 +666,7 @@ public class CrearActividadFragment extends Fragment implements OnMapReadyCallba
 
         //La cámara es el punto de vista que refleja una cantidad de espacio o volumen en los mapas de la API de Google Maps.
         // Genera una instancia CameraUpdate que ubica el objetivo de la cámara en las nuevas coordenadas
-        nMap.moveCamera(CameraUpdateFactory.newLatLng(latLong));
+        nMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLong,5));
     }
 
     /**

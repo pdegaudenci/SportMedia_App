@@ -26,25 +26,23 @@ public class LoginActivity extends AppCompatActivity {
     private EditText edt_user,edt_password;
     private Button btn_login, btn_register;
 
-
     private static ArrayList<Usuario> users = new ArrayList<>();
     private FirebaseController firebase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        binding();
+        listeners();
+    }
+
+    private void binding() {
         edt_user = (EditText) findViewById(R.id.username);
         edt_password = (EditText) findViewById(R.id.password);
-
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_register=(Button) findViewById(R.id.btn_registro);
         firebase = new FirebaseController("Usuarios",getApplicationContext());
-        listeners();
-
-
     }
-
-
 
     private void listeners(){
     btn_register.setOnClickListener(new View.OnClickListener() {
@@ -94,13 +92,8 @@ private boolean autenticarUsuario() {
                         edt_user.setText("");
                         edt_password.setText("");
                     }
-
-
                 }
-
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 

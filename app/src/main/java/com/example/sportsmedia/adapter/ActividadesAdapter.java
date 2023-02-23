@@ -97,19 +97,19 @@ public class ActividadesAdapter extends RecyclerView.Adapter<ActividadesAdapter.
 
             // Creo objeto bundle que almacenará informacion de la actividad y se transmitirá en la trasaccion entre fragments
             Bundle bundle= new Bundle();
+
             bundle.putSerializable("actividad",actividad);
             bundle.putString("tipo",tipo);
-            Fragment fragmento = new ActivityDetailFragment();
 
+            ActivityDetailFragment fragmento = new ActivityDetailFragment();
             // Al fragment le proporciono argumentos
             fragmento.setArguments(bundle);
             // add apila los fragmentos y eso hace que, cuando presione el boton atras se regresa al anterior fragment
-            HomeActivity.manager.beginTransaction().add(R.id.fragment,fragmento).addToBackStack(null).commit();
+            HomeActivity.manager.beginTransaction().add(R.id.fragment,fragmento).addToBackStack("actividades").commit();
 
         }
 
     }
-
 
     /**
      * Metodo invocado por el  layout manager para renderizar cada elemento del RecyclerView

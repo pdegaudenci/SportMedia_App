@@ -1,8 +1,9 @@
 package com.example.sportsmedia.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Usuario {
+public class Usuario implements Serializable {
     /**
      * Atriutos de usuarios
      */
@@ -16,16 +17,6 @@ public class Usuario {
      */
     public Usuario() {
 
-    }
-
-    public Usuario(String id, String nombre, String apellido, String username, String password, String fechanac, String email){
-        this.uid = id;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.username = username;
-        this.password =password;
-        this.fechanac=fechanac;
-        this.email=email;
     }
 
     /**

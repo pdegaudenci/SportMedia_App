@@ -3,14 +3,12 @@ package com.example.sportsmedia.dto;
 import java.io.Serializable;
 
 public class Actividad implements Serializable {
-    private String uid;
-    private String titulo;
+    private String uid,titulo;
     private String descripcion;
     private String comunidad;
     private boolean equipoEspecial;
     private String horaInicio;
     private String horaFin;
-
     private String duracion;
     private String fecha;
     private String usuario;
@@ -18,9 +16,7 @@ public class Actividad implements Serializable {
     private double longitud;
     private String nombreLugar;
     private String direccion;
-
     private boolean activada=true;
-
     private Integer cantPersonas=0;
 
     public double getLatitud() {

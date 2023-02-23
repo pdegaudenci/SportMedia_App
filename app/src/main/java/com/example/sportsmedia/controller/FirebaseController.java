@@ -9,12 +9,17 @@ import com.google.firebase.database.FirebaseDatabase;
 public class FirebaseController {
     private  FirebaseDatabase firebase;
     private DatabaseReference reference;
-
     public FirebaseController(String database, Context context){
         this.reference=initFirebase(database,context);
     }
-
-
+    /**
+     * Método que genera una instancia de firebase y obtiene una refrencia a una
+     * coleccion en especifico.
+     * @param database Nombre de la coleccion de firebase a la  que se quiere obtener
+     *                 referencia
+     * @param context Conexto de la aplicacion
+     * @return DatabaseRefrence con la referencia a una colección particular
+     */
     private DatabaseReference initFirebase(String database, Context context) {
         FirebaseApp.initializeApp(context);
         //Instancia a la base de datos
@@ -23,20 +28,7 @@ public class FirebaseController {
         reference= firebase.getReference(database);
         return reference;
     }
-
-    public  FirebaseDatabase getFirebase() {
-        return firebase;
-    }
-
-    public  void setFirebase(FirebaseDatabase firebase) {
-        this.firebase = firebase;
-    }
-
     public DatabaseReference getReference() {
         return reference;
-    }
-
-    public  void setReference(DatabaseReference reference) {
-        this.reference = reference;
     }
 }

@@ -147,7 +147,11 @@ private void binding(){
                     item.setChecked(true);
                 }
                 else if(tipo.equalsIgnoreCase("filtrar"))
-                    System.out.println("Hollaaaa");
+                {
+                    fragment =new FiltrarFragment();
+                    cargarFragment(fragment,tipo);
+                    item.setChecked(true);
+                }
                 return true;
             }
         });
@@ -164,7 +168,7 @@ private void binding(){
         bundle.putString("tipo",argumento);
         fragmento.setArguments(bundle);
         if(fragmento!=null)
-            HomeActivity.manager.beginTransaction().replace(R.id.fragment_red,fragmento).addToBackStack(null).commit();
+            getChildFragmentManager().beginTransaction().replace(R.id.fragment_red,fragmento).addToBackStack(null).commit();
 }
 
 }

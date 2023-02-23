@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/home_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragments.BienvenidoFragment">
+
+    <Button
+        android:layout_marginTop="50dp"
+        android:id="@+id/btn_ir_Misactividades"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_button"
+        android:hint="@string/btn_modificar"
+        android:textColorHint="#FFFFFF"
+        android:textSize="15sp"
+        />
+    <Button
+        android:id="@+id/btn_ir_sociales"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_button"
+        android:hint="@string/btn_modificar"
+        android:textColorHint="#FFFFFF"
+        android:textSize="15sp"
+        />
+
+
+</LinearLayout>

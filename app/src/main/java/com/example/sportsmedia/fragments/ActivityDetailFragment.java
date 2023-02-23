@@ -1,8 +1,11 @@
 package com.example.sportsmedia.fragments;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -17,8 +20,15 @@ import com.example.sportsmedia.HomeActivity;
 import com.example.sportsmedia.R;
 import com.example.sportsmedia.controller.FirebaseController;
 import com.example.sportsmedia.dto.Actividad;
+import com.example.sportsmedia.dto.Usuario;
 import com.example.sportsmedia.utils.AuxiliarUI;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,9 +43,11 @@ public class ActivityDetailFragment extends Fragment {
     private Button btn_suscripcion;
     private Button btn_borrar_suscripcion;
     FirebaseController firebase;
+    FirebaseController firebaseUsuario;
     private Actividad actividad;
     private DatabaseReference db;
-    private String tipo;
+    private String tipo="";
+    private Context context;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,10 +87,11 @@ public class ActivityDetailFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
-            tipo =savedInstanceState.getString("tipo");
+
         }
         // Obtengo controlador de firebase para poder interactuar con mi BBDD
         firebase= new FirebaseController("Actividades",getContext());
+        firebaseUsuario= new FirebaseController("Usuarios",getContext());
 
         // Gestiono evento del boton atrás del dispositivo
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
@@ -115,10 +128,15 @@ public class ActivityDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vista= inflater.inflate(R.layout.fragment_activity_detail, container, false);
+        // Obtengo argumentos recibidos por el fragment  y los almaceno en un objeto Bundle
+        Bundle datos= getArguments();
+
+        // Obtengo tipo de actividad provista por argumentos del fragment
+        if(datos!=null)
+            tipo =datos.getString("tipo");
         binding(vista);
         obtenerDetallesActividad(savedInstanceState);
         listener();
-
         // Referencia a nodo que de la BBDD que contiene actividad
         db=firebase.getReference().child(actividad.getUid());
         return vista;
@@ -146,6 +164,10 @@ public class ActivityDetailFragment extends Fragment {
         txt_inscripto.setText("Cantidad de personas inscriptas: "+(inscriptos==null?0:inscriptos));
     }
 
+    /**
+     * Vinculacion de los elementos del fichero de diseño con los correspondientes variables del fragment
+     * @param vista Representacion del layout en un objeto de la vista de la clase View
+     */
     private void binding(View vista) {
         txt_titulo=vista.findViewById(R.id.txt_titulo);
         txt_descripcion = vista.findViewById(R.id.txt_descripcion);
@@ -160,15 +182,24 @@ public class ActivityDetailFragment extends Fragment {
         btn_suscripcion=vista.findViewById(R.id.btn_subscripcion);
         btn_borrar_suscripcion=vista.findViewById(R.id.btn_borrar_subscripcion);
 
-        // En funcion del tipo de actividades , visualizo uno de los 3 posibles botones
+        // En funcion del tipo de actividades (Actividades del usuario, sociales disponibles y actividades subscriptas por el usuario) , visualizo uno de los 3 posibles botones
         if(tipo.equals("sociales")){
+
             btn_suscripcion.setVisibility(View.VISIBLE);
+            btn_borrar.setVisibility(View.INVISIBLE);
+            btn_borrar_suscripcion.setVisibility(View.INVISIBLE);
         }
         else if(tipo.equals("inscripciones")){
+
             btn_borrar_suscripcion.setVisibility(View.VISIBLE);
+            btn_borrar.setVisibility(View.INVISIBLE);
+            btn_suscripcion.setVisibility(View.INVISIBLE);
         }
         else {
+
             btn_borrar.setVisibility(View.VISIBLE);
+            btn_suscripcion.setVisibility(View.INVISIBLE);
+            btn_borrar_suscripcion.setVisibility(View.INVISIBLE);
         }
 
     }
@@ -177,22 +208,82 @@ public class ActivityDetailFragment extends Fragment {
         btn_borrar_suscripcion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String uuid= actividad.getUid();
+                Usuario usuario=HomeActivity.getUserglobal();
+                String idUsuario=HomeActivity.getUserglobal().getUid();
+                DatabaseReference referenciaActividades= firebase.getReference().child(uuid);
+                DatabaseReference referencia=firebaseUsuario.getReference().child(idUsuario);
+                // Mapa con los valores a actualizar del usuario
+                Map<String, Object> map_usuario = new HashMap<>();
+                // Mapa con los valores a actualizar de la actividad
+                Map<String, Object> map_Actividad = new HashMap<>();
+                // Agrego id de la actividad al ArrayList de actividades del usuario
+                usuario.getIdActividades().remove(uuid);
+
+                map_usuario.put("uid", usuario.getUid());
+                map_usuario.put(" username", usuario.getUsername());
+                map_usuario.put("nombre", usuario.getNombre());
+                map_usuario.put("apellido", usuario.getApellido());
+                map_usuario.put("password", usuario.getPassword());
+                map_usuario.put("fechanac", usuario.getFechanac());
+                map_usuario.put("email", usuario.getEmail());
+
+                map_usuario.put("idActividades", usuario.getIdActividades());
+                map_Actividad.put("cantPersonas",actividad.getCantPersonas()-1);
+                // Actualiza la BBDD
+                referencia.updateChildren(map_usuario);
+                referenciaActividades.updateChildren(map_Actividad);
+                getChildFragmentManager().beginTransaction().replace(R.id.fragment_red,new HomeFragment());
 
             }
         });
         btn_suscripcion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String uuid= actividad.getUid();
+
+                Usuario usuario=HomeActivity.getUserglobal();
+                String idUsuario=HomeActivity.getUserglobal().getUid();
+                DatabaseReference referenciaActividades= firebase.getReference().child(uuid);
+                DatabaseReference referencia=firebaseUsuario.getReference().child(idUsuario);
+                // Mapa con los valores a actualizar del usuario
+                Map<String, Object> map_usuario = new HashMap<>();
+                // Mapa con los valores a actualizar de la actividad
+                Map<String, Object> map_Actividad = new HashMap<>();
+                // Agrego id de la actividad al ArrayList de actividades del usuario
+                usuario.getIdActividades().add(uuid);
+
+                        /*map_usuario.put("uid", usuario.getUid());
+                        map_usuario.put(" username", usuario.getUsername());
+                        map_usuario.put("nombre", usuario.getNombre());
+                        map_usuario.put("apellido", usuario.getApellido());
+                        map_usuario.put("password", usuario.getPassword());
+                        map_usuario.put("fechanac", usuario.getFechanac());
+                        map_usuario.put("email", usuario.getEmail());*/
+
+                map_usuario.put("idActividades", usuario.getIdActividades());
+                map_Actividad.put("cantPersonas",actividad.getCantPersonas()+1);
+
+                // Actualiza la BBDD de usuarios (Agrego actividad a su lista de actividades suscriptas) y Actividades
+                referencia.updateChildren(map_usuario);
+                referenciaActividades.updateChildren(map_Actividad);
+                //Toast.makeText(getActivity().getApplicationContext(), "Actualizando..", Toast.LENGTH_SHORT).show();
+                // vuelvo al fragment anterior
+
+                // Volvemos al home
+                getChildFragmentManager().beginTransaction().replace(R.id.fragment_red,new HomeFragment());
 
             }
         });
+
+
         btn_borrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Le paso la actividad contenedora del actual fragment
                 boolean borrado = AuxiliarUI.ventanaDialogo("Deseas eliminar esta actividad?",getActivity());
 
-                if(borrado){
+                if(!borrado){
                     db.removeValue();
                     Toast.makeText(getContext(),"Actividad borrada correctamente",Toast.LENGTH_LONG);
 

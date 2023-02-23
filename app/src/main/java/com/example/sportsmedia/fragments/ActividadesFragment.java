@@ -52,6 +52,8 @@ public class ActividadesFragment extends Fragment {
     private static ArrayList<Actividad> misInscripciones=new ArrayList<>();
 
     private String textoVacio;
+
+    private TextView textView_vacio;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -106,25 +108,16 @@ public class ActividadesFragment extends Fragment {
         // Binding con la interfaz recyclerView y con la BBDD firebase
         binding();
         loadData();
+
         // Asigno al recyclerView el adapter que gestiona las vistas
-        mAdapter = new ActividadesAdapter(myDataSet,getActivity().getApplicationContext(),tipo);
-        if(mAdapter.getItemCount()!=0){
-            // Asigno al recyclerView el adapter que gestiona las vistas
-            mRecyclerView.setAdapter(mAdapter);
-        }
-        else{
-            // En caso de que el usuario no tenga actividades creados, creo un textview de forma dinamica
-            grupoVistas=  (ViewGroup) vista.findViewById(R.id.contenedorActividades);
-            LayoutInflater inflador = LayoutInflater.from(getContext());
-            int id = R.layout.empty_layout;
+        mAdapter = new ActividadesAdapter(myDataSet,getContext(),tipo);
 
-            ConstraintLayout relativeLayout = (ConstraintLayout) inflador.inflate(id, null, false);
-
-            TextView textView = (TextView) relativeLayout.findViewById(R.id.txt_vacio);
-            textView.setText(textoVacio);
-
-            grupoVistas.addView(relativeLayout);
-
+        // Asigno al recyclerView el adapter que gestiona las vistas
+        mRecyclerView.setAdapter(mAdapter);
+        if(mAdapter.getItemCount()==0){
+            textView_vacio = (TextView) vista.findViewById(R.id.txt_vacio);
+            textView_vacio.setVisibility(View.VISIBLE);
+            textView_vacio.setText(textoVacio);
         }
         btn_crearActividad =vista.findViewById(R.id.btn_crearActividad2);
         if(tipo.equalsIgnoreCase("misActividades"))
@@ -162,19 +155,24 @@ public class ActividadesFragment extends Fragment {
     }
     private void loadData() {
         cargaDatosActividades();
-        if(tipo.equalsIgnoreCase("sociales"))
-        {
-            textoVacio="No hay actividades sociales disponibles";
-            myDataSet= ActividadesFragment.actividades;
-        }
+
         if(tipo.equalsIgnoreCase("inscripciones")){
             textoVacio="No estas suscripto a ninguna actividad";
             myDataSet= ActividadesFragment.misInscripciones;
+        }
+        else if(tipo.equalsIgnoreCase("sociales"))
+        {
+            myDataSet= ActividadesFragment.actividades;
+         textoVacio="No hay actividades disponibles";
+
         }
         else{
             textoVacio="No has creado ninguna actividad";
             myDataSet= ActividadesFragment.misActividades;
         }
+
+
+
     }
 
     private void cargaDatosActividades(){
@@ -184,6 +182,8 @@ public class ActividadesFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // Seteo las activididades cargadas previamente
                 ActividadesFragment.misActividades.clear();
+                ActividadesFragment.misInscripciones.clear();
+                ActividadesFragment.actividades.clear();
                 for (DataSnapshot element: snapshot.getChildren()){
                     Actividad  activityAux= element.getValue(Actividad.class);
 
@@ -196,7 +196,11 @@ public class ActividadesFragment extends Fragment {
                             ActividadesFragment.actividades.add(activityAux);
                     }
                 }
-
+                if(mAdapter.getItemCount()!=0)
+                {
+                    if(textView_vacio!=null)
+                        textView_vacio.setVisibility(View.INVISIBLE);
+                }
                 mAdapter.notifyDataSetChanged();
 
 

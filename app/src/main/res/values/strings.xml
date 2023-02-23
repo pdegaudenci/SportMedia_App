@@ -21,21 +21,22 @@
     <string name="comunidad3">Aragon</string>
     <string name="comunidad4">Islas Baleares</string>
     <string name="comunidad5">Islas Canarias</string>
-    <string name="comunidad6">Canarias</string>
-    <string name="comunidad7">Cantabria</string>
-    <string name="comunidad8">Castilla La Mancha</string>
-    <string name="comunidad9">Castilla y Leon</string>
-    <string name="comunidad10">Cataluña</string>
-    <string name="comunidad11">Extremadura</string>
-    <string name="comunidad12">La Rioja</string>
-    <string name="comunidad13">Madrid</string>
-    <string name="comunidad14">Murcia</string>
-    <string name="comunidad15">Navarra</string>
-    <string name="comunidad16">Galicia</string>
-    <string name="comunidad17">Pais Vasco</string>
+    <string name="comunidad6">Cantabria</string>
+    <string name="comunidad7">Castilla La Mancha</string>
+    <string name="comunidad8">Castilla y Leon</string>
+    <string name="comunidad9">Cataluña</string>
+    <string name="comunidad10">Extremadura</string>
+    <string name="comunidad11">La Rioja</string>
+    <string name="comunidad12">Madrid</string>
+    <string name="comunidad13">Murcia</string>
+    <string name="comunidad14">Navarra</string>
+    <string name="comunidad15">Galicia</string>
+    <string name="comunidad16">Pais Vasco</string>
+    <string name="comunidad17">Valencia</string>
     <string name="equipo">Es necesario contar con equipo especial</string>
     <string name="btn_crear_tarea">"Crear nueva actividad "</string>
     <string name="btn_nueva_actividad">Crear actividad</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home">Cuenta personal</string>
@@ -45,4 +46,6 @@
     <string name="argentina_full_snippet">La República Argentina, conocida simplemente como Argentina,  es un país soberano de América del Sur, ubicado en el extremo sur y sudeste  de dicho subcontinente. Adopta la forma de gobierno republicana, representativa y federal.  El Estado nacional convive federativamente con veinticuatro entidades  estatales autónomas, de las cuales veintitrés son provincias  que preservan todo el poder no delegado constitucionalmente  a la Nación y una es la Ciudad Autónoma de Buenos Aires,  designada por ley como capital federal.</string>
     <string name="apikey">AIzaSyDvbgmZrF1oII_luchav2C8_SC9YbhpKVE</string>
     <string name="direccion_actividad">Direccion:</string>
+    <string name="btn_modificar">Modificar datos de usuario</string>
+    <string name="btn_password">Modificar contraseña</string>
 </resources>

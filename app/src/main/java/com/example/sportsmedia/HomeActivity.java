@@ -19,6 +19,8 @@ import android.widget.TextView;
 
 import com.example.sportsmedia.dto.Actividad;
 import com.example.sportsmedia.fragments.ActividadesFragment;
+import com.example.sportsmedia.fragments.BienvenidoFragment;
+import com.example.sportsmedia.fragments.CuentaUsuarioFragment;
 import com.example.sportsmedia.fragments.HomeFragment;
 import com.example.sportsmedia.fragments.RedFragment;
 import com.example.sportsmedia.dto.Usuario;
@@ -69,6 +71,7 @@ public class HomeActivity extends AppCompatActivity {
         String text = getString(R.string.welcome, getUserglobal().getNombre());
         // Instancio un Administrador de fragmentos de la actividad contenedora que será accesible desde otros fragments
         manager=getSupportFragmentManager();
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
@@ -84,7 +87,15 @@ public class HomeActivity extends AppCompatActivity {
         toggle.syncState();
         navigationView = (NavigationView)findViewById(R.id.navigation_view);
         cargarMenu();
+        cargarFragmentPrincipal();
+    }
 
+
+    private void cargarFragmentPrincipal() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment , new BienvenidoFragment()).addToBackStack(null)
+                .commit();
     }
 
     /**
@@ -114,7 +125,7 @@ public class HomeActivity extends AppCompatActivity {
                         fragmentTransaction = true;
                         break;
                     case R.id.nav_home:
-                        fragment = new HomeFragment();
+                        fragment = new CuentaUsuarioFragment();
                         tag="home";
                         fragmentTransaction = true;
                         break;
