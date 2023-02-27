@@ -11,7 +11,10 @@ a través del adminitrador de fragmentos se producen las transiciones
 * Servicios externos : Uso de firebase Realtime database para la persistencia de los datos
 * API de google: Maps y Places.
 
-_
+## Views de la App
+
+![Screenshot_20230226-215846_SportsMedia](https://user-images.githubusercontent.com/73450522/221664119-352aa058-2e90-4a37-8959-df47515af5f8.jpg)![Screenshot_20230226-201055_SportsMedia](https://user-images.githubusercontent.com/73450522/221664235-3131e298-5baa-4153-b811-a5a2e35f4d20.jpg)
+
 
 ### Pre-requisitos 📋
 
