@@ -139,10 +139,6 @@ public class ActividadesFragment extends Fragment {
             });
         }
 
-
-        // Cargo Fragment handler
-
-
         return vista;
     }
 

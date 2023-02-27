@@ -1,6 +1,9 @@
 package com.example.sportsmedia.fragments;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -14,13 +17,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sportsmedia.HomeActivity;
 import com.example.sportsmedia.R;
 import com.example.sportsmedia.controller.FirebaseController;
 import com.example.sportsmedia.dto.Actividad;
+import com.example.sportsmedia.dto.Usuario;
 import com.example.sportsmedia.repository.FirebaseCRUD;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,16 +41,20 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FiltrarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnInfoWindowClickListener {
+public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
     private View vista;
     private GoogleMap nMap;
     private LatLng latLong;
@@ -51,11 +62,14 @@ public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, Go
     private FirebaseController firebase;
     private FirebaseCRUD firebaseCRUD;
 
+    private FirebaseController firebaseUsuario;
+
     private Spinner feedbackSpinner;
     private String[] provincias;
     private ArrayList<LatLng> listaCoordenadas=new ArrayList<>();
 
-    private Marker marker;
+    private ArrayList<Actividad> actividades=FirebaseCRUD.getActividades();
+    private ArrayList<Marker> markers=new ArrayList<>();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -171,6 +185,7 @@ public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, Go
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 LatLng latLng= listaCoordenadas.get(position);
+                cargarMarkers(actividades);
                 // Cargo el mapa de un lugar detrminado dado por la variable latLng y con un nivel de zoom predeterminado
                 nMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,8));
 
@@ -187,6 +202,7 @@ public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, Go
         // Inicializo el servicio de firebase
         firebase = new FirebaseController("Actividades", getActivity().getApplicationContext());
         firebaseCRUD=new FirebaseCRUD(firebase);
+        firebaseUsuario=new FirebaseController("Usuarios",getContext());
         // Lista desplegable (Spinner) con valor de comunidad autonoma que sera condicion de filtro
         feedbackSpinner = (Spinner) vista.findViewById(R.id.filtrar_comunidad);
 
@@ -230,7 +246,6 @@ public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, Go
         // Establezco valores minimos y maximo de de zoom
         nMap.setMinZoomPreference(0.3f);
         nMap.setMaxZoomPreference(20.0f);
-
         // Parametros de configuracion de los controles del mapa de la API
         UiSettings uiSettings = nMap.getUiSettings();
         // Establezco preferencias de zoom del mapa
@@ -244,9 +259,9 @@ public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, Go
         nMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(40.502,-3.683),6));
         Circle circle = nMap.addCircle(new CircleOptions()
                 .center(new LatLng(40.502,-3.683))
-                .radius(10000)
+                .radius(5000000)
                 .strokeColor(Color.RED)
-                .fillColor(Color.WHITE));
+        );
         // Verificacion de permisos para obtner posicion actual
         if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.INTERNET}, 5622);
@@ -261,17 +276,13 @@ public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, Go
             }
         });
 
-        cargarMarkers(FirebaseCRUD.getActividades());
+        cargarMarkers(actividades);
 
 
         // listener para gestionar el evento de hacer un click sobre el mapa de la API de Google Map (Debe implementar la interfaz googleMap.OnMapClickListener)
         nMap.setOnMapClickListener(this);
-        // listener para gestionar el evento de hacer un click largo sobre el mapa de la API de Google Map (Debe implementar la interfaz GoogleMap.OnMapLongClickListener )
-        nMap.setOnMapLongClickListener(this);
-        // listener que escucha evento de hacer click sobre ventana de informacion (Se debe implementar interfaz GoogleMap.OnInfoWindowClickListener)
-        nMap.setOnInfoWindowClickListener(this);
-
-
+        // listener para gestionar el evento de hacer un click sobre un marker del Map (Debe implementar la interfaz GoogleMap.OnMarkerClickListener)
+        nMap.setOnMarkerClickListener(this);
     }
 
     /**
@@ -283,7 +294,7 @@ public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, Go
 
         for (Actividad actividad:actividades){
             LatLng latLng =new LatLng(actividad.getLatitud(),actividad.getLongitud());
-            nMap.addMarker(new MarkerOptions().position(latLng).title(actividad.getNombreLugar()));
+            nMap.addMarker(new MarkerOptions().position(latLng).title(actividad.getNombreLugar()).snippet(actividad.getUid()));
         }
 
 
@@ -294,13 +305,85 @@ public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, Go
 
     }
 
+    /**
+     * Handler gestiona el evento de hacer click en un marker determinado
+     * @param marker objeto Marker seleccionado
+     * @return true
+     */
     @Override
-    public void onMapLongClick(LatLng latLng) {
+    public boolean onMarkerClick(Marker marker) {
+        String uuid= marker.getSnippet();
+        Actividad actividad = buscarActividad(uuid);
 
+        // Obtengo vista correspondiente a alertDialog
+        ViewGroup subView = (ViewGroup) getLayoutInflater().// inflater view
+                inflate(R.layout.popups_map, null, false);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        alertDialogBuilder.setView(subView);
+        alertDialogBuilder.setTitle("Actividad disponible");
+
+        TextView txt_header= (TextView) subView.findViewById(R.id.header_actividad_popup);
+        txt_header.setText(actividad.getTitulo());
+        TextView txt_comunidad= (TextView) subView.findViewById(R.id.comunidad_actividad_popup);
+        txt_comunidad.setText(actividad.getComunidad());
+        TextView txt_fecha= (TextView) subView.findViewById(R.id.fecha_actividad_popup);
+        txt_fecha.setText(actividad.getFecha());
+        TextView txt_inscriptos= (TextView) subView.findViewById(R.id.inscriptos_popup);
+        txt_inscriptos.setText("Cantidad de insriptos:"+String.valueOf(actividad.getCantPersonas()));
+        TextView txt_lugar= (TextView) subView.findViewById(R.id.lugar_actividad_popup);
+        txt_lugar.setText(actividad.getDireccion());
+        TextView txt_descripcion= (TextView) subView.findViewById(R.id.descripcion_popup);
+        txt_descripcion.setText("Descripcion:"+actividad.getDescripcion());
+
+        alertDialogBuilder.setPositiveButton("Subscribirse", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Usuario usuario= HomeActivity.getUserglobal();
+                String idUsuario=HomeActivity.getUserglobal().getUid();
+                DatabaseReference referenciaActividades= firebase.getReference().child(uuid);
+                DatabaseReference referencia=firebaseUsuario.getReference().child(idUsuario);
+                // Mapa con los valores a actualizar del usuario
+                Map<String, Object> map_usuario = new HashMap<>();
+                // Mapa con los valores a actualizar de la actividad
+                Map<String, Object> map_Actividad = new HashMap<>();
+                // Agrego id de la actividad al ArrayList de actividades del usuario
+                usuario.getIdActividades().add(uuid);
+
+                map_usuario.put("idActividades", usuario.getIdActividades());
+                map_Actividad.put("cantPersonas",actividad.getCantPersonas()+1);
+
+                // Actualiza la BBDD de usuarios (Agrego actividad a su lista de actividades suscriptas) y Actividades
+                referencia.updateChildren(map_usuario);
+                referenciaActividades.updateChildren(map_Actividad);
+                //Toast.makeText(getActivity().getApplicationContext(), "Actualizando..", Toast.LENGTH_SHORT).show();
+                // vuelvo al fragment anterior
+
+                // Volvemos al home a la seccion de inscripciones
+                Bundle bundle=new Bundle();
+                bundle.putString("tipo","inscripciones");
+                Fragment fragmento =new RedFragment();
+                fragmento.setArguments(bundle);
+                getChildFragmentManager().beginTransaction().replace(R.id.fragment_red,fragmento);
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+     Dialog dialog = new Dialog(getContext());
+
+        return false;
     }
 
-    @Override
-    public void onInfoWindowClick(Marker marker) {
-
+    /**
+     * Metodo que busca una actividad en función de su uuidd (Identificador único)
+     * @param uuid String que identifica a la actividad buscada
+     * @return ACtividad o null en caso de no encontrarla
+     */
+    private Actividad buscarActividad(String uuid) {
+        for (Actividad actividad:actividades){
+            if(actividad.getUid().equals(uuid))
+                return actividad;
+        }
+        return null;
     }
+
 }
