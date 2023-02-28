@@ -15,25 +15,19 @@ public class AuxiliarUI {
      * @return boolean : true si usuario confirmo y false en caso contrario
      */
     public static boolean ventanaDialogo(String mensaje, Activity activity){
-
         boolean[] confirmacion = new boolean[1];
-        AlertDialog dialogo = new AlertDialog
-                .Builder(activity)
-                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+        AlertDialog dialogo = new AlertDialog.Builder(activity).setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Hicieron click en el botón positivo, así que la acción está confirmada
-                        confirmacion[0] =true;
-                    }
-                })
-                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        confirmacion[0] =true;                    }
+                }).setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Hicieron click en el botón negativo, no confirmaron
                         // Simplemente descartamos el diálogo
                         confirmacion[0] =false;
-                        dialog.dismiss();
-                    }
+                        dialog.dismiss();                    }
                 })
                 .setTitle("Confirmar") // El título
                 .setMessage(mensaje) // El mensaje

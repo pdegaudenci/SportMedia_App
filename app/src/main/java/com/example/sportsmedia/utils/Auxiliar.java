@@ -10,7 +10,6 @@ public class Auxiliar {
         return new Date(System.currentTimeMillis());
 
     }
-
     public static boolean validarRangoFechas(String fechaInicio, String fechaFin) {
         boolean fechaValida = true;
         String aux = null;
@@ -55,7 +54,6 @@ public class Auxiliar {
         return horarioValida;
 
     }
-
     public static Long calcularDiferenciaMinutos(String horaInicio, String horaFin) {
         Long diferencia=null;
 

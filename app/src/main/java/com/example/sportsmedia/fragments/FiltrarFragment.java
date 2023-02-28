@@ -54,10 +54,10 @@ import java.util.Map;
  * Use the {@link FiltrarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
+public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
     private View vista;
     private GoogleMap nMap;
-    private LatLng latLong;
+
     private SupportMapFragment mapFragment;
     private FirebaseController firebase;
     private FirebaseCRUD firebaseCRUD;
@@ -124,8 +124,6 @@ public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, Go
         // Carga de los listeners de los handlers de cada elemento vinvulado
         listeners();
         cargarMap();
-        // Inflate the layout for this fragment
-
         return vista;
     }
 
@@ -198,28 +196,22 @@ public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, Go
     }
 
     public void binding()
-    {
-        // Inicializo el servicio de firebase
+    {        // Inicializo el servicio de firebase
         firebase = new FirebaseController("Actividades", getActivity().getApplicationContext());
         firebaseCRUD=new FirebaseCRUD(firebase);
         firebaseUsuario=new FirebaseController("Usuarios",getContext());
         // Lista desplegable (Spinner) con valor de comunidad autonoma que sera condicion de filtro
         feedbackSpinner = (Spinner) vista.findViewById(R.id.filtrar_comunidad);
-
         provincias=getResources().getStringArray(R.array.lista_comunidades);
     }
-
     private void cargarMap() {
         // Obtengo fragment del fichero xml fragment_google_map donde cargaré el mapa
         mapFragment= (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_filtro);
         //mapFragment = SupportMapFragment.newInstance();
-
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_filtro, mapFragment)
                 .commit();
-
-
         if (mapFragment != null) {
             //// check permissions to access resources /////////
             if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(),
@@ -229,11 +221,8 @@ public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, Go
                 Toast.makeText(getActivity().getApplicationContext(), "Sin permisos suficientes", Toast.LENGTH_LONG).show();
                 // Solicito al usuario de la aplicacion que otorge permisos para acceder a ubicacion
                 ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.INTERNET}, 5622);
-
             }
-
-            // método de asociación getMapAsync()  registra la actividad como escucha.
-            // Invoca al metodo onMapReady () , por lo que la Clase de este Fragment debe implementar la interfaz OnMapReadyCallback
+            // método de asociación getMapAsync()  registra la actividad como escucha.Invoca al metodo onMapReady () , por lo que la Clase de este Fragment debe implementar la interfaz OnMapReadyCallback
             mapFragment.getMapAsync(this);
         }
     }
@@ -254,14 +243,8 @@ public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, Go
         uiSettings.setScrollGesturesEnabled(true);
         uiSettings.setTiltGesturesEnabled(true);
         uiSettings.setScrollGesturesEnabledDuringRotateOrZoom(true);
-
         // Cargo el mapa de un lugar detrminado
         nMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(40.502,-3.683),6));
-        Circle circle = nMap.addCircle(new CircleOptions()
-                .center(new LatLng(40.502,-3.683))
-                .radius(5000000)
-                .strokeColor(Color.RED)
-        );
         // Verificacion de permisos para obtner posicion actual
         if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.INTERNET}, 5622);
@@ -275,10 +258,7 @@ public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, Go
                 nMap.setMyLocationEnabled(true);
             }
         });
-
         cargarMarkers(actividades);
-
-
         // listener para gestionar el evento de hacer un click sobre el mapa de la API de Google Map (Debe implementar la interfaz googleMap.OnMapClickListener)
         nMap.setOnMapClickListener(this);
         // listener para gestionar el evento de hacer un click sobre un marker del Map (Debe implementar la interfaz GoogleMap.OnMarkerClickListener)
@@ -296,8 +276,6 @@ public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, Go
             LatLng latLng =new LatLng(actividad.getLatitud(),actividad.getLongitud());
             nMap.addMarker(new MarkerOptions().position(latLng).title(actividad.getNombreLugar()).snippet(actividad.getUid()));
         }
-
-
     }
 
     @Override
@@ -314,14 +292,12 @@ public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, Go
     public boolean onMarkerClick(Marker marker) {
         String uuid= marker.getSnippet();
         Actividad actividad = buscarActividad(uuid);
-
         // Obtengo vista correspondiente a alertDialog
         ViewGroup subView = (ViewGroup) getLayoutInflater().// inflater view
                 inflate(R.layout.popups_map, null, false);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
         alertDialogBuilder.setView(subView);
         alertDialogBuilder.setTitle("Actividad disponible");
-
         TextView txt_header= (TextView) subView.findViewById(R.id.header_actividad_popup);
         txt_header.setText(actividad.getTitulo());
         TextView txt_comunidad= (TextView) subView.findViewById(R.id.comunidad_actividad_popup);
@@ -334,7 +310,6 @@ public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, Go
         txt_lugar.setText(actividad.getDireccion());
         TextView txt_descripcion= (TextView) subView.findViewById(R.id.descripcion_popup);
         txt_descripcion.setText("Descripcion:"+actividad.getDescripcion());
-
         alertDialogBuilder.setPositiveButton("Subscribirse", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -348,7 +323,6 @@ public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, Go
                 Map<String, Object> map_Actividad = new HashMap<>();
                 // Agrego id de la actividad al ArrayList de actividades del usuario
                 usuario.getIdActividades().add(uuid);
-
                 map_usuario.put("idActividades", usuario.getIdActividades());
                 map_Actividad.put("cantPersonas",actividad.getCantPersonas()+1);
 
@@ -356,19 +330,16 @@ public class FiltrarFragment  extends Fragment implements OnMapReadyCallback, Go
                 referencia.updateChildren(map_usuario);
                 referenciaActividades.updateChildren(map_Actividad);
                 //Toast.makeText(getActivity().getApplicationContext(), "Actualizando..", Toast.LENGTH_SHORT).show();
-                // vuelvo al fragment anterior
 
-                // Volvemos al home a la seccion de inscripciones
                 Bundle bundle=new Bundle();
                 bundle.putString("tipo","inscripciones");
                 Fragment fragmento =new RedFragment();
                 fragmento.setArguments(bundle);
-                getChildFragmentManager().beginTransaction().replace(R.id.fragment_red,fragmento);
-            }
+                getChildFragmentManager().beginTransaction().replace(R.id.fragment_red,fragmento);            }
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-     Dialog dialog = new Dialog(getContext());
+
 
         return false;
     }

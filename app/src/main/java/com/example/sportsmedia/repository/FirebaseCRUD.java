@@ -37,8 +37,12 @@ public class FirebaseCRUD {
 
     }
 
-
-
+    /**
+     * Metodo que crea un nuevo documento de una coleccion determinado en funcion del tipo de objeto pasado por parametro.
+     * @param uuii String que corresponde al identificador unica del objeto que será mapeado como documento en la coleccion
+     * @param documento Object que será casteado a un objeto de la clase Actividad o la clase Usuario
+     * @return boolean true si se realizó la tarea de insercción correctamente
+     */
     public boolean create(String uuii, Object documento){
         boolean creado= false;
         if(documento instanceof Actividad){
@@ -51,7 +55,12 @@ public class FirebaseCRUD {
         }
         return creado;
     }
-
+    /**
+     * Metodo que borra documento de una coleccion determinado en funcion del tipo de objeto pasado por parametro.
+     * @param uuii String que corresponde al identificador unica del objeto que será mapeado como documento en la coleccion
+     * @param documento Object que será casteado a un objeto de la clase Actividad o la clase Usuario
+     * @return boolean true si se realizó la tarea de borrado correctamente
+     */
     public boolean delete(String uuii, Object documento){
         boolean borrado= false;
         if(documento instanceof Actividad){
@@ -69,7 +78,11 @@ public class FirebaseCRUD {
         return borrado;
     }
 
-
+    /**
+     * Metodo que carga las actividades almacenadas en la coleccion Actividades de Firebase
+     * , dentro de uno de los 2 ArrayList , discriminando si las actividad la creó
+     * el usuario o fue creada por otros usuarios
+     */
    public  void cargaDatosActividades(){
        firebase.getReference().addChildEventListener(new ChildEventListener() {
            @Override

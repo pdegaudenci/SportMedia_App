@@ -37,22 +37,17 @@ import java.util.ArrayList;
  */
 public class ActividadesFragment extends Fragment {
 
-
     private RecyclerView mRecyclerView;
     private ActividadesAdapter mAdapter;
     private FirebaseController firebase;
     private View vista;
     private ArrayList<Actividad> myDataSet;
-
     private static ArrayList<Actividad> actividades=new ArrayList<>();
 
     private ViewGroup grupoVistas;
     private static ArrayList<Actividad> misActividades=new ArrayList<>();
-
     private static ArrayList<Actividad> misInscripciones=new ArrayList<>();
-
     private String textoVacio;
-
     private TextView textView_vacio;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -101,17 +96,13 @@ public class ActividadesFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         // Inflar el layout de este fragment
         vista= inflater.inflate(R.layout.fragment_actividades, container, false);
         // Binding con la interfaz recyclerView y con la BBDD firebase
         binding();
-        loadData();
-
-        // Asigno al recyclerView el adapter que gestiona las vistas
+        loadData();// Asigno al recyclerView el adapter que gestiona las vistas
         mAdapter = new ActividadesAdapter(myDataSet,getContext(),tipo);
-
         // Asigno al recyclerView el adapter que gestiona las vistas
         mRecyclerView.setAdapter(mAdapter);
         if(mAdapter.getItemCount()==0){
@@ -121,15 +112,13 @@ public class ActividadesFragment extends Fragment {
         }
         btn_crearActividad =vista.findViewById(R.id.btn_crearActividad2);
         if(tipo.equalsIgnoreCase("misActividades"))
-        {
+        {   // Visibilizo el boton
             btn_crearActividad.setVisibility(View.VISIBLE);
             btn_crearActividad.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    btn_crearActividad.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) { btn_crearActividad.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-
                             FragmentManager manager= getActivity().getSupportFragmentManager();
                             FragmentTransaction ft= manager.beginTransaction().replace(R.id.fragment, new CrearActividadFragment());
                             ft.commit();
@@ -149,6 +138,10 @@ public class ActividadesFragment extends Fragment {
         // Creo un controlller donde
         firebase = new FirebaseController("Actividades",getContext());
     }
+    /**
+     * Metodo que asocia la fuente de datos del adapter con un ArrayList de Actividades especifico
+     * Hay 3 listas posibles para ser fuente de datos: misIncripciones, actividades o misActividades
+     */
     private void loadData() {
         cargaDatosActividades();
 
@@ -166,35 +159,33 @@ public class ActividadesFragment extends Fragment {
             textoVacio="No has creado ninguna actividad";
             myDataSet= ActividadesFragment.misActividades;
         }
-
-
-
     }
 
+    /**
+     * Metodo que solicita datos de la coleccion Actividades de firebase y los carga en cada
+     * uno de los ArrayList estaticos declarados
+     */
     private void cargaDatosActividades(){
         firebase.getReference().addValueEventListener(new ValueEventListener() {
-
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // Seteo las activididades cargadas previamente
                 ActividadesFragment.misActividades.clear();
                 ActividadesFragment.misInscripciones.clear();
                 ActividadesFragment.actividades.clear();
+                // Obtengo los nodos hijos de la referencia (Documentos de la coleccion actividades)
                 for (DataSnapshot element: snapshot.getChildren()){
+                    // Por cada elemento , obtengo su valor y lo parseo en base a mi POJO Actividad
                     Actividad  activityAux= element.getValue(Actividad.class);
-
                     if(activityAux.getUsuario().equals(HomeActivity.getUserglobal().getUsername()))
                         ActividadesFragment.misActividades.add(activityAux);
                     else {
                         if(HomeActivity.getUserglobal().getIdActividades().contains(activityAux.getUid()))
                             ActividadesFragment.misInscripciones.add(activityAux);
                         else
-                            ActividadesFragment.actividades.add(activityAux);
-                    }
-                }
+                            ActividadesFragment.actividades.add(activityAux);  } }
                 if(mAdapter.getItemCount()!=0)
-                {
-                    if(textView_vacio!=null)
+                {  if(textView_vacio!=null)
                         textView_vacio.setVisibility(View.INVISIBLE);
                 }
                 mAdapter.notifyDataSetChanged();

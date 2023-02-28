@@ -71,9 +71,7 @@ public class ActividadesAdapter extends RecyclerView.Adapter<ActividadesAdapter.
             // Obtengo elementos de cada RecyclerView
             binding(v);
         }
-
         private void binding(View v) {
-
             context = v.getContext();
             txtHeader = (TextView) v.findViewById(R.id.header_actividad);
             lugar = (TextView) v.findViewById(R.id.lugar_actividad);
@@ -83,30 +81,24 @@ public class ActividadesAdapter extends RecyclerView.Adapter<ActividadesAdapter.
             hora = (TextView) v.findViewById(R.id.hora_actividad);
             cantInscriptos = (TextView) v.findViewById(R.id.inscriptos);
             btnDetails = (Button) v.findViewById(R.id.btn_detalle);
-            Log.i("Creacion ViewHolder", "Se cargaron los elementos de la vista reutilizable de cada elemento correctamente");
-        }
-
+            Log.i("Creacion ViewHolder", "Se cargaron los elementos de la vista reutilizable de cada elemento correctamente");        }
         // Defino listeners para nuestros elementos de cada vista
         void setOnclikListener() {
             btnDetails.setOnClickListener(this);
             Log.i("Carga de listener", "Carga de manejador de evento click de boton de cada vista realizada correctamente");
         }
-
         @Override
         public void onClick(View view) {
-
             // Creo objeto bundle que almacenará informacion de la actividad y se transmitirá en la trasaccion entre fragments
             Bundle bundle= new Bundle();
-
             bundle.putSerializable("actividad",actividad);
             bundle.putString("tipo",tipo);
-
             ActivityDetailFragment fragmento = new ActivityDetailFragment();
             // Al fragment le proporciono argumentos
             fragmento.setArguments(bundle);
             // add apila los fragmentos y eso hace que, cuando presione el boton atras se regresa al anterior fragment
+            // En este caso obtenemos FragmentManager de la actividad contenedora para poder hacer la transicion de fragmentos
             HomeActivity.manager.beginTransaction().add(R.id.fragment,fragmento).addToBackStack("actividades").commit();
-
         }
 
     }
@@ -137,7 +129,6 @@ public class ActividadesAdapter extends RecyclerView.Adapter<ActividadesAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 // - obtenemos un elemento del dataset según su posición
         // - reemplazamos el contenido usando tales datos
-
        holder.actividad =mDataSet.get(position);
        System.out.println(mDataSet);
        holder.txtHeader.setText( mDataSet.get(position).getTitulo());

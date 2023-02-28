@@ -33,23 +33,18 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         binding();
-        listeners();
-    }
-
+        listeners();    }
     private void binding() {
         edt_user = (EditText) findViewById(R.id.username);
         edt_password = (EditText) findViewById(R.id.password);
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_register=(Button) findViewById(R.id.btn_registro);
-        firebase = new FirebaseController("Usuarios",getApplicationContext());
-    }
-
+        firebase = new FirebaseController("Usuarios",getApplicationContext());    }
     private void listeners(){
     btn_register.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
-            startActivity(intent);
+            Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);startActivity(intent);
         }
     });
     btn_login.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +66,6 @@ private boolean autenticarUsuario() {
         firebase.getReference().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 LoginActivity.getUsers().clear();
                 for (DataSnapshot element: snapshot.getChildren()){
                     Usuario userAux = element.getValue(Usuario.class);
@@ -90,8 +84,7 @@ private boolean autenticarUsuario() {
                     else{
                         Toast.makeText(getApplicationContext(),"Credenciales Incorrecta. Ingréselas nuevamente", Toast.LENGTH_SHORT).show();
                         edt_user.setText("");
-                        edt_password.setText("");
-                    }
+                        edt_password.setText("");                    }
                 }
             }
             @Override
@@ -107,49 +100,7 @@ private boolean autenticarUsuario() {
         return users;
     }
 
-    public Usuario autenticate(ArrayList<Usuario> users_list, HashMap<String,String> dataUser){
-        Usuario user_temp=null;
 
-        for (Usuario user_aux:users_list){
 
-            if ((user_aux.getUsername().equals(dataUser.get("username").toString()) ||
-                    user_aux.getEmail().equals(dataUser.get("username").toString())&&
-                            user_aux.getPassword().equals(dataUser.get("password"))))
-            {
 
-                user_temp=user_aux;
-            }
-        }
-        return user_temp;
-    }
-
-    public void processFinish(String s) {
-        Usuario user = checkUser(s);
-        if(user == null){
-            Toast.makeText(this,"Verifique usuario y contraseña", Toast.LENGTH_LONG).show();
-        }
-        else{
-
-        }
-    }
-    private Usuario checkUser(String s){
-        Usuario user = null;
-        try {
-            JSONObject jsonObject = new JSONObject(s);
-            if(jsonObject.length() >= 0){
-                String username = jsonObject.getString("username");
-                String password = jsonObject.getString("password");
-                String nombre = jsonObject.getString("nombre");
-                String apellido = jsonObject.getString("apellido");
-                String fechanac = jsonObject.getString("fechanac");
-                int id = jsonObject.getInt("id");
-                //user = new Usuario(id,nombre,apellido,username,password,fechanac);
-            }
-        } catch (JSONException e) {
-
-            return user;
-        }
-
-        return user;
-    }
 }

@@ -123,7 +123,6 @@ public class RegisterActivity extends AppCompatActivity {
         String pwdConfirm = passwdConfirm.getText().toString();
         String correo = email.getText().toString();
         String nacimiento = et_fechaNac.getText().toString();
-
         if(user.equals("")||name.equals("")||apell.equals("")||passwd.equals("")|| correo.equals("") || nacimiento.equals(""))
             Toast.makeText(getApplicationContext(), "Debe completar todos los campos", Toast.LENGTH_SHORT).show();
         else if(!validatePassword(passwd,pwdConfirm))
@@ -139,11 +138,9 @@ public class RegisterActivity extends AppCompatActivity {
             usuario.setFechanac(nacimiento);
             usuario.setIdActividades(new ArrayList<String>());
         }
-        return usuario;
-    }
+        return usuario;    }
 
     public void registroUsuario(Usuario user){
-
         reference.child("Usuarios").child(user.getUid()).setValue(user);
         Toast.makeText(getApplicationContext(),"Registro correcto. Logueate con tu usuario",Toast.LENGTH_LONG);
     }

@@ -163,7 +163,6 @@ public class ActivityDetailFragment extends Fragment {
         Integer inscriptos=actividad.getCantPersonas();
         txt_inscripto.setText("Cantidad de personas inscriptas: "+(inscriptos==null?0:inscriptos));
     }
-
     /**
      * Vinculacion de los elementos del fichero de diseño con los correspondientes variables del fragment
      * @param vista Representacion del layout en un objeto de la vista de la clase View
@@ -181,27 +180,22 @@ public class ActivityDetailFragment extends Fragment {
         btn_borrar=vista.findViewById(R.id.btn_borrarActividad);
         btn_suscripcion=vista.findViewById(R.id.btn_subscripcion);
         btn_borrar_suscripcion=vista.findViewById(R.id.btn_borrar_subscripcion);
-
         // En funcion del tipo de actividades (Actividades del usuario, sociales disponibles y actividades subscriptas por el usuario) , visualizo uno de los 3 posibles botones
         if(tipo.equals("sociales")){
-
             btn_suscripcion.setVisibility(View.VISIBLE);
             btn_borrar.setVisibility(View.INVISIBLE);
             btn_borrar_suscripcion.setVisibility(View.INVISIBLE);
         }
         else if(tipo.equals("inscripciones")){
-
             btn_borrar_suscripcion.setVisibility(View.VISIBLE);
             btn_borrar.setVisibility(View.INVISIBLE);
             btn_suscripcion.setVisibility(View.INVISIBLE);
         }
         else {
-
             btn_borrar.setVisibility(View.VISIBLE);
             btn_suscripcion.setVisibility(View.INVISIBLE);
             btn_borrar_suscripcion.setVisibility(View.INVISIBLE);
         }
-
     }
 
     private void listener(){

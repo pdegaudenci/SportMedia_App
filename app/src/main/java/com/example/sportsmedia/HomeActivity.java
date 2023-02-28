@@ -50,7 +50,6 @@ public class HomeActivity extends AppCompatActivity {
     public static ArrayList<Actividad> getMyActividades() {
         return misActividades;
     }
-
     public static ArrayList<Actividad> getActividades() {
         return actividadesSociales;
     }
@@ -74,8 +73,9 @@ public class HomeActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-
+        // Creo ActionBar personal
         drawerLayout = findViewById(R.id.drawer_layout);
+        // toogle para ocultar/abrir menu
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
@@ -85,6 +85,7 @@ public class HomeActivity extends AppCompatActivity {
             actionBar.setTitle(text);
         }
         toggle.syncState();
+        // Vinculo menu de navegacion con layout
         navigationView = (NavigationView)findViewById(R.id.navigation_view);
         cargarMenu();
         cargarFragmentPrincipal();
@@ -103,7 +104,6 @@ public class HomeActivity extends AppCompatActivity {
      * cargar un determinado fragment , en funcion del item seleccionado
      */
     private void cargarMenu(){
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -129,16 +129,12 @@ public class HomeActivity extends AppCompatActivity {
                         tag="home";
                         fragmentTransaction = true;
                         break;
-
                     case R.id.nav_cerrar_sesion:
                         setUserglobal(null);
                         Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                         startActivity(intent);
                         break;
-
-                }
-
-                if (fragmentTransaction){
+                } if (fragmentTransaction){
                     changeFragment (fragment , item ,tag);
                     drawerLayout.closeDrawers();
                 }
@@ -187,8 +183,6 @@ public class HomeActivity extends AppCompatActivity {
             item.setChecked(true);
             // Seteo titulo superior del fragment cargado
             getSupportActionBar().setTitle(item.getTitle());
-
-
 
     }
 
